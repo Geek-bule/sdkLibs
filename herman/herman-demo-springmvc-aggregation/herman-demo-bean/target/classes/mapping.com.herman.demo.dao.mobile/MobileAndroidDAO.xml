@@ -1,0 +1,321 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.herman.demo.dao.mobile.IMobileAndroidDAO">
+
+    <!--实体映射-->
+    <resultMap id="base_result_map" type="com.herman.demo.entity.mobile.MobileAndroid">
+        <!--主键-->
+        <id column="id" property="id"/>
+        <!--本平台生成的设备唯一标识-->
+        <result column="dg_udid" property="dgUdid"/>
+        <!--手机标识-->
+        <result column="imei" property="imei"/>
+        <!--手机标识-->
+        <result column="android_id" property="androidId"/>
+        <!--手机标识-->
+        <result column="address" property="address"/>
+        <!--创建时间-->
+        <result column="gmt_create" property="gmtCreate"/>
+        <!--更新时间-->
+        <result column="gmt_modified" property="gmtModified"/>
+        <!--是否删除（0：否，1：是）-->
+        <result column="is_deleted" property="isDeleted"/>
+    </resultMap>
+
+
+    <!-- 通用查询结果列-->
+    <sql id="base_column_list">
+		 id,dg_udid,imei,android_id,address,gmt_create,gmt_modified,is_deleted
+	</sql>
+
+    <sql id="base_condition_filed">
+        <if test="id != null">
+            and id = #{id}
+        </if>
+        <if test="dgUdid != null and dgUdid!=''">
+            and dg_udid = #{dgUdid}
+        </if>
+        <if test="imei != null and imei!=''">
+            and imei = #{imei}
+        </if>
+        <if test="androidId != null and androidId!=''">
+            and android_id = #{androidId}
+        </if>
+        <if test="address != null and address!=''">
+            and address = #{address}
+        </if>
+        <if test="gmtCreate != null">
+            and gmt_create = #{gmtCreate}
+        </if>
+        <if test="gmtModified != null">
+            and gmt_modified = #{gmtModified}
+        </if>
+        <if test="isDeleted != null">
+            and is_deleted = #{isDeleted}
+        </if>
+    </sql>
+    <!-- 通用条件列-->
+    <sql id="base_condition">
+        <where>
+            <include refid="base_condition_filed"/>
+        </where>
+    </sql>
+
+    <!-- 通用查询条件列-->
+    <sql id="query_condition">
+        <where>
+            <if test="dgUdid!= null  and dgUdid!=''">
+                and dg_udid like concat('%', #{dgUdid}, '%')
+            </if>
+            <if test="imei!= null  and imei!=''">
+                and imei like concat('%', #{imei}, '%')
+            </if>
+            <if test="androidId!= null  and androidId!=''">
+                and android_id like concat('%', #{androidId}, '%')
+            </if>
+            <if test="address!= null  and address!=''">
+                and address like concat('%', #{address}, '%')
+            </if>
+            <if test="gmtCreate != null and gmtCreate !=''">
+                <![CDATA[ and  gmt_create = str_to_date('${gmtCreate}', '%Y-%m-%d') ]]>
+            </if>
+            <if test="gmtModified != null and gmtModified !=''">
+                <![CDATA[ and  gmt_modified = str_to_date('${gmtModified}', '%Y-%m-%d') ]]>
+            </if>
+        </where>
+    </sql>
+
+    <!-- 通用查询条件列，用于分页-->
+    <sql id="query_condition_page">
+        <where>
+            <if test="entity.dgUdid!= null  and entity.dgUdid!=''">
+                and dg_udid like concat('%', #{entity.dgUdid}, '%')
+            </if>
+            <if test="entity.imei!= null  and entity.imei!=''">
+                and imei like concat('%', #{entity.imei}, '%')
+            </if>
+            <if test="entity.androidId!= null  and entity.androidId!=''">
+                and android_id like concat('%', #{entity.androidId}, '%')
+            </if>
+            <if test="entity.address!= null  and entity.address!=''">
+                and address like concat('%', #{entity.address}, '%')
+            </if>
+            <if test="entity.gmtCreate != null and entity.gmtCreate !=''">
+                <![CDATA[ and  gmt_create = str_to_date('${entity.gmtCreate}', '%Y-%m-%d') ]]>
+            </if>
+            <if test="entity.gmtModified != null and entity.gmtModified !=''">
+                <![CDATA[ and  gmt_modified = str_to_date('${entity.gmtModified}', '%Y-%m-%d') ]]>
+            </if>
+        </where>
+    </sql>
+
+    <!-- 查询集合-->
+    <select id="selectList" resultMap="base_result_map">
+        SELECT
+        <include refid="base_column_list"/>
+        FROM mobile_android
+        <include refid="query_condition"/>
+    </select>
+
+    <!-- 分页查询集合-->
+    <select id="selectListPage" resultMap="base_result_map">
+        SELECT
+        <include refid="base_column_list"/>
+        FROM mobile_android
+        <include refid="query_condition_page"/>
+    </select>
+
+    <!-- 查询数量-->
+    <select id="selectCount" resultType="java.lang.Integer">
+        SELECT count(1) FROM mobile_android
+        <include refid="query_condition"/>
+    </select>
+
+    <!-- 插入 （匹配有值的字段）-->
+    <insert id="insert" parameterType="com.herman.demo.entity.mobile.MobileAndroid">
+        <selectKey keyProperty="id" resultType="Long" order="AFTER">
+            SELECT LAST_INSERT_ID()
+        </selectKey>
+        INSERT INTO mobile_android
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="dgUdid != null">
+                dg_udid,
+            </if>
+            <if test="imei != null">
+                imei,
+            </if>
+            <if test="androidId != null">
+                android_id,
+            </if>
+            <if test="address != null">
+                address,
+            </if>
+            <if test="gmtCreate != null">
+                gmt_create,
+            </if>
+            <if test="gmtModified != null">
+                gmt_modified,
+            </if>
+            <if test="isDeleted != null">
+                is_deleted,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="dgUdid!=null">
+                #{dgUdid},
+            </if>
+            <if test="imei!=null">
+                #{imei},
+            </if>
+            <if test="androidId!=null">
+                #{androidId},
+            </if>
+            <if test="address!=null">
+                #{address},
+            </if>
+            <if test="gmtCreate!=null">
+                #{gmtCreate},
+            </if>
+            <if test="gmtModified!=null">
+                #{gmtModified},
+            </if>
+            <if test="isDeleted!=null">
+                #{isDeleted},
+            </if>
+        </trim>
+    </insert>
+
+    <!-- 插入或者更新 （匹配有值的字段）-->
+    <insert id="insertOrUpdate" parameterType="com.herman.demo.entity.mobile.MobileAndroid">
+        INSERT INTO mobile_android
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                id,
+            </if>
+            <if test="dgUdid != null">
+                dg_udid,
+            </if>
+            <if test="imei != null">
+                imei,
+            </if>
+            <if test="androidId != null">
+                android_id,
+            </if>
+            <if test="address != null">
+                address,
+            </if>
+            <if test="gmtCreate != null">
+                gmt_create,
+            </if>
+            <if test="gmtModified != null">
+                gmt_modified,
+            </if>
+            <if test="isDeleted != null">
+                is_deleted,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id!=null">
+                #{id},
+            </if>
+            <if test="dgUdid!=null">
+                #{dgUdid},
+            </if>
+            <if test="imei!=null">
+                #{imei},
+            </if>
+            <if test="androidId!=null">
+                #{androidId},
+            </if>
+            <if test="address!=null">
+                #{address},
+            </if>
+            <if test="gmtCreate!=null">
+                #{gmtCreate},
+            </if>
+            <if test="gmtModified!=null">
+                #{gmtModified},
+            </if>
+            <if test="isDeleted!=null">
+                #{isDeleted},
+            </if>
+        </trim>
+        on DUPLICATE key
+        <trim prefix="" suffix="" suffixOverrides=",">
+            <if test="dgUdid!=null">
+                dg_udid = VALUES(dg_udid),
+            </if>
+            <if test="imei!=null">
+                imei = VALUES(imei),
+            </if>
+            <if test="androidId!=null">
+                android_id = VALUES(android_id),
+            </if>
+            <if test="address!=null">
+                address = VALUES(address),
+            </if>
+            <if test="gmtCreate!=null">
+                gmt_create = VALUES(gmt_create),
+            </if>
+            <if test="gmtModified!=null">
+                gmt_modified = VALUES(gmt_modified),
+            </if>
+            <if test="isDeleted!=null">
+                is_deleted = VALUES(is_deleted),
+            </if>
+        </trim>
+    </insert>
+
+    <!-- 添加 （批量插入）-->
+    <insert id="insertBatch" parameterType="com.herman.demo.entity.mobile.MobileAndroid">
+        INSERT INTO mobile_android(dg_udid,imei,android_id,address,gmt_create,gmt_modified,is_deleted)values
+        <foreach collection="list" item="item" separator=",">
+            (
+            #{item.dgUdid},#{item.imei},#{item.androidId},#{item.address},#{item.gmtCreate},#{item.gmtModified},#{item.isDeleted}
+            )
+        </foreach>
+    </insert>
+
+    <!-- 根据Id修改-->
+    <update id="updateById" parameterType="com.herman.demo.entity.mobile.MobileAndroid">
+        UPDATE mobile_android
+        <set>
+            <if test="bean.dgUdid != null">
+                dg_udid = #{bean.dgUdid},
+            </if>
+            <if test="bean.imei != null">
+                imei = #{bean.imei},
+            </if>
+            <if test="bean.androidId != null">
+                android_id = #{bean.androidId},
+            </if>
+            <if test="bean.address != null">
+                address = #{bean.address},
+            </if>
+            <if test="bean.gmtCreate != null">
+                gmt_create = #{bean.gmtCreate},
+            </if>
+            <if test="bean.gmtModified != null">
+                gmt_modified = #{bean.gmtModified},
+            </if>
+            <if test="bean.isDeleted != null">
+                is_deleted = #{bean.isDeleted},
+            </if>
+        </set>
+        where id=#{id}
+    </update>
+
+    <!-- 根据Id删除-->
+    <delete id="deleteById">
+		delete from mobile_android where id=#{id}
+	</delete>
+
+    <!-- 根据PrimaryKey获取对象-->
+    <select id="selectById" resultMap="base_result_map">
+        select
+        <include refid="base_column_list"/>
+        from mobile_android where id=#{id}
+    </select>
+
+</mapper>

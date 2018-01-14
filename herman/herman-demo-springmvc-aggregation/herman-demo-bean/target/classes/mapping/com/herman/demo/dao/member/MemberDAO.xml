@@ -1,0 +1,429 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.herman.demo.dao.member.IMemberDAO">
+
+    <!--实体映射-->
+    <resultMap id="base_result_map" type="com.herman.demo.entity.member.Member">
+        <!--主键-->
+        <id column="id" property="id"/>
+        <!--游戏id-->
+        <result column="game_id" property="gameId"/>
+        <!--账号内部识别标识-->
+        <result column="dg_account" property="dgAccount"/>
+        <!--本平台生成的设备唯一标识-->
+        <result column="dg_udid" property="dgUdid"/>
+        <!--绑定平台账号类型-->
+        <result column="platform_type" property="platformType"/>
+        <!--绑定平台账号标识-->
+        <result column="platform_account" property="platformAccount"/>
+        <!--手机系统类型（android，ios）-->
+        <result column="mobile_type" property="mobileType"/>
+        <!--用户昵称-->
+        <result column="nikename" property="nikename"/>
+        <!--用户头像-->
+        <result column="head" property="head"/>
+        <!--创建时间-->
+        <result column="gmt_create" property="gmtCreate"/>
+        <!--更新时间-->
+        <result column="gmt_modified" property="gmtModified"/>
+        <!--是否删除（0：否，1：是）-->
+        <result column="is_deleted" property="isDeleted"/>
+    </resultMap>
+
+
+    <!-- 通用查询结果列-->
+    <sql id="base_column_list">
+		 id,game_id,dg_account,dg_udid,platform_type,platform_account,mobile_type,nikename,head,gmt_create,gmt_modified,is_deleted
+	</sql>
+
+    <sql id="base_condition_filed">
+        <if test="id != null">
+            and id = #{id}
+        </if>
+        <if test="gameId != null">
+            and game_id = #{gameId}
+        </if>
+        <if test="dgAccount != null and dgAccount!=''">
+            and dg_account = #{dgAccount}
+        </if>
+        <if test="dgUdid != null and dgUdid!=''">
+            and dg_udid = #{dgUdid}
+        </if>
+        <if test="platformType != null and platformType!=''">
+            and platform_type = #{platformType}
+        </if>
+        <if test="platformAccount != null and platformAccount!=''">
+            and platform_account = #{platformAccount}
+        </if>
+        <if test="mobileType != null and mobileType!=''">
+            and mobile_type = #{mobileType}
+        </if>
+        <if test="nikename != null and nikename!=''">
+            and nikename = #{nikename}
+        </if>
+        <if test="head != null and head!=''">
+            and head = #{head}
+        </if>
+        <if test="gmtCreate != null">
+            and gmt_create = #{gmtCreate}
+        </if>
+        <if test="gmtModified != null">
+            and gmt_modified = #{gmtModified}
+        </if>
+        <if test="isDeleted != null">
+            and is_deleted = #{isDeleted}
+        </if>
+    </sql>
+    <!-- 通用条件列-->
+    <sql id="base_condition">
+        <where>
+            <include refid="base_condition_filed"/>
+        </where>
+    </sql>
+
+    <!-- 通用查询条件列-->
+    <sql id="query_condition">
+        <where>
+            <if test="dgAccount!= null  and dgAccount!=''">
+                and dg_account like concat('%', #{dgAccount}, '%')
+            </if>
+            <if test="dgUdid!= null  and dgUdid!=''">
+                and dg_udid like concat('%', #{dgUdid}, '%')
+            </if>
+            <if test="platformType!= null  and platformType!=''">
+                and platform_type like concat('%', #{platformType}, '%')
+            </if>
+            <if test="platformAccount!= null  and platformAccount!=''">
+                and platform_account like concat('%', #{platformAccount}, '%')
+            </if>
+            <if test="mobileType!= null  and mobileType!=''">
+                and mobile_type like concat('%', #{mobileType}, '%')
+            </if>
+            <if test="nikename!= null  and nikename!=''">
+                and nikename like concat('%', #{nikename}, '%')
+            </if>
+            <if test="head!= null  and head!=''">
+                and head like concat('%', #{head}, '%')
+            </if>
+            <if test="gmtCreate != null and gmtCreate !=''">
+                <![CDATA[ and  gmt_create = str_to_date('${gmtCreate}', '%Y-%m-%d') ]]>
+            </if>
+            <if test="gmtModified != null and gmtModified !=''">
+                <![CDATA[ and  gmt_modified = str_to_date('${gmtModified}', '%Y-%m-%d') ]]>
+            </if>
+        </where>
+    </sql>
+
+    <!-- 通用查询条件列，用于分页-->
+    <sql id="query_condition_page">
+        <where>
+            <if test="entity.dgAccount!= null  and entity.dgAccount!=''">
+                and dg_account like concat('%', #{entity.dgAccount}, '%')
+            </if>
+            <if test="entity.dgUdid!= null  and entity.dgUdid!=''">
+                and dg_udid like concat('%', #{entity.dgUdid}, '%')
+            </if>
+            <if test="entity.platformType!= null  and entity.platformType!=''">
+                and platform_type like concat('%', #{entity.platformType}, '%')
+            </if>
+            <if test="entity.platformAccount!= null  and entity.platformAccount!=''">
+                and platform_account like concat('%', #{entity.platformAccount}, '%')
+            </if>
+            <if test="entity.mobileType!= null  and entity.mobileType!=''">
+                and mobile_type like concat('%', #{entity.mobileType}, '%')
+            </if>
+            <if test="entity.nikename!= null  and entity.nikename!=''">
+                and nikename like concat('%', #{entity.nikename}, '%')
+            </if>
+            <if test="entity.head!= null  and entity.head!=''">
+                and head like concat('%', #{entity.head}, '%')
+            </if>
+            <if test="entity.gmtCreate != null and entity.gmtCreate !=''">
+                <![CDATA[ and  gmt_create = str_to_date('${entity.gmtCreate}', '%Y-%m-%d') ]]>
+            </if>
+            <if test="entity.gmtModified != null and entity.gmtModified !=''">
+                <![CDATA[ and  gmt_modified = str_to_date('${entity.gmtModified}', '%Y-%m-%d') ]]>
+            </if>
+        </where>
+    </sql>
+
+    <!-- 查询集合-->
+    <select id="selectList" resultMap="base_result_map">
+        SELECT
+        <include refid="base_column_list"/>
+        FROM member
+        <include refid="query_condition"/>
+    </select>
+
+    <!-- 分页查询集合-->
+    <select id="selectListPage" resultMap="base_result_map">
+        SELECT
+        <include refid="base_column_list"/>
+        FROM member
+        <include refid="query_condition_page"/>
+    </select>
+
+    <!-- 查询数量-->
+    <select id="selectCount" resultType="java.lang.Integer">
+        SELECT count(1) FROM member
+        <include refid="query_condition"/>
+    </select>
+
+    <!-- 插入 （匹配有值的字段）-->
+    <insert id="insert" parameterType="com.herman.demo.entity.member.Member">
+        <selectKey keyProperty="id" resultType="Long" order="AFTER">
+            SELECT LAST_INSERT_ID()
+        </selectKey>
+        INSERT INTO member
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="gameId != null">
+                game_id,
+            </if>
+            <if test="dgAccount != null">
+                dg_account,
+            </if>
+            <if test="dgUdid != null">
+                dg_udid,
+            </if>
+            <if test="platformType != null">
+                platform_type,
+            </if>
+            <if test="platformAccount != null">
+                platform_account,
+            </if>
+            <if test="mobileType != null">
+                mobile_type,
+            </if>
+            <if test="nikename != null">
+                nikename,
+            </if>
+            <if test="head != null">
+                head,
+            </if>
+            <if test="gmtCreate != null">
+                gmt_create,
+            </if>
+            <if test="gmtModified != null">
+                gmt_modified,
+            </if>
+            <if test="isDeleted != null">
+                is_deleted,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="gameId!=null">
+                #{gameId},
+            </if>
+            <if test="dgAccount!=null">
+                #{dgAccount},
+            </if>
+            <if test="dgUdid!=null">
+                #{dgUdid},
+            </if>
+            <if test="platformType!=null">
+                #{platformType},
+            </if>
+            <if test="platformAccount!=null">
+                #{platformAccount},
+            </if>
+            <if test="mobileType!=null">
+                #{mobileType},
+            </if>
+            <if test="nikename!=null">
+                #{nikename},
+            </if>
+            <if test="head!=null">
+                #{head},
+            </if>
+            <if test="gmtCreate!=null">
+                #{gmtCreate},
+            </if>
+            <if test="gmtModified!=null">
+                #{gmtModified},
+            </if>
+            <if test="isDeleted!=null">
+                #{isDeleted},
+            </if>
+        </trim>
+    </insert>
+
+    <!-- 插入或者更新 （匹配有值的字段）-->
+    <insert id="insertOrUpdate" parameterType="com.herman.demo.entity.member.Member">
+        INSERT INTO member
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                id,
+            </if>
+            <if test="gameId != null">
+                game_id,
+            </if>
+            <if test="dgAccount != null">
+                dg_account,
+            </if>
+            <if test="dgUdid != null">
+                dg_udid,
+            </if>
+            <if test="platformType != null">
+                platform_type,
+            </if>
+            <if test="platformAccount != null">
+                platform_account,
+            </if>
+            <if test="mobileType != null">
+                mobile_type,
+            </if>
+            <if test="nikename != null">
+                nikename,
+            </if>
+            <if test="head != null">
+                head,
+            </if>
+            <if test="gmtCreate != null">
+                gmt_create,
+            </if>
+            <if test="gmtModified != null">
+                gmt_modified,
+            </if>
+            <if test="isDeleted != null">
+                is_deleted,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id!=null">
+                #{id},
+            </if>
+            <if test="gameId!=null">
+                #{gameId},
+            </if>
+            <if test="dgAccount!=null">
+                #{dgAccount},
+            </if>
+            <if test="dgUdid!=null">
+                #{dgUdid},
+            </if>
+            <if test="platformType!=null">
+                #{platformType},
+            </if>
+            <if test="platformAccount!=null">
+                #{platformAccount},
+            </if>
+            <if test="mobileType!=null">
+                #{mobileType},
+            </if>
+            <if test="nikename!=null">
+                #{nikename},
+            </if>
+            <if test="head!=null">
+                #{head},
+            </if>
+            <if test="gmtCreate!=null">
+                #{gmtCreate},
+            </if>
+            <if test="gmtModified!=null">
+                #{gmtModified},
+            </if>
+            <if test="isDeleted!=null">
+                #{isDeleted},
+            </if>
+        </trim>
+        on DUPLICATE key
+        <trim prefix="" suffix="" suffixOverrides=",">
+            <if test="gameId!=null">
+                game_id = VALUES(game_id),
+            </if>
+            <if test="dgAccount!=null">
+                dg_account = VALUES(dg_account),
+            </if>
+            <if test="dgUdid!=null">
+                dg_udid = VALUES(dg_udid),
+            </if>
+            <if test="platformType!=null">
+                platform_type = VALUES(platform_type),
+            </if>
+            <if test="platformAccount!=null">
+                platform_account = VALUES(platform_account),
+            </if>
+            <if test="mobileType!=null">
+                mobile_type = VALUES(mobile_type),
+            </if>
+            <if test="nikename!=null">
+                nikename = VALUES(nikename),
+            </if>
+            <if test="head!=null">
+                head = VALUES(head),
+            </if>
+            <if test="gmtCreate!=null">
+                gmt_create = VALUES(gmt_create),
+            </if>
+            <if test="gmtModified!=null">
+                gmt_modified = VALUES(gmt_modified),
+            </if>
+            <if test="isDeleted!=null">
+                is_deleted = VALUES(is_deleted),
+            </if>
+        </trim>
+    </insert>
+
+    <!-- 添加 （批量插入）-->
+    <insert id="insertBatch" parameterType="com.herman.demo.entity.member.Member">
+        INSERT INTO
+        member(game_id,dg_account,dg_udid,platform_type,platform_account,mobile_type,nikename,head,gmt_create,gmt_modified,is_deleted)values
+        <foreach collection="list" item="item" separator=",">
+            (
+            #{item.gameId},#{item.dgAccount},#{item.dgUdid},#{item.platformType},#{item.platformAccount},#{item.mobileType},#{item.nikename},#{item.head},#{item.gmtCreate},#{item.gmtModified},#{item.isDeleted}
+            )
+        </foreach>
+    </insert>
+
+    <!-- 根据IdAndGameId修改-->
+    <update id="updateByIdAndGameId" parameterType="com.herman.demo.entity.member.Member">
+        UPDATE member
+        <set>
+            <if test="bean.dgAccount != null">
+                dg_account = #{bean.dgAccount},
+            </if>
+            <if test="bean.dgUdid != null">
+                dg_udid = #{bean.dgUdid},
+            </if>
+            <if test="bean.platformType != null">
+                platform_type = #{bean.platformType},
+            </if>
+            <if test="bean.platformAccount != null">
+                platform_account = #{bean.platformAccount},
+            </if>
+            <if test="bean.mobileType != null">
+                mobile_type = #{bean.mobileType},
+            </if>
+            <if test="bean.nikename != null">
+                nikename = #{bean.nikename},
+            </if>
+            <if test="bean.head != null">
+                head = #{bean.head},
+            </if>
+            <if test="bean.gmtCreate != null">
+                gmt_create = #{bean.gmtCreate},
+            </if>
+            <if test="bean.gmtModified != null">
+                gmt_modified = #{bean.gmtModified},
+            </if>
+            <if test="bean.isDeleted != null">
+                is_deleted = #{bean.isDeleted},
+            </if>
+        </set>
+        where id=#{id} and game_id=#{gameId}
+    </update>
+
+    <!-- 根据IdAndGameId删除-->
+    <delete id="deleteByIdAndGameId">
+		delete from member where id=#{id} and game_id=#{gameId}
+	</delete>
+
+    <!-- 根据PrimaryKey获取对象-->
+    <select id="selectByIdAndGameId" resultMap="base_result_map">
+        select
+        <include refid="base_column_list"/>
+        from member where id=#{id} and game_id=#{gameId}
+    </select>
+
+</mapper>
