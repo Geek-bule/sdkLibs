@@ -1,0 +1,8 @@
+<component name="ArtifactManager">
+  <artifact type="war" name="herman-demo-app:war">
+    <output-path>$PROJECT_DIR$/herman-demo-springmvc-aggregation/herman-demo-app/target</output-path>
+    <root id="archive" name="herman-demo-app.war">
+      <element id="artifact" artifact-name="herman-demo-app:war exploded" />
+    </root>
+  </artifact>
+</component>

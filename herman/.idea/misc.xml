@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="EntryPointsManager">
+    <entry_points version="2.0" />
+  </component>
+  <component name="FrameworkDetectionExcludesConfiguration">
+    <file type="web" url="file://$PROJECT_DIR$/herman-demo-bean" />
+    <file type="web" url="file://$PROJECT_DIR$/herman-demo-manager" />
+    <file type="web" url="file://$PROJECT_DIR$/herman-demo-springmvc" />
+    <file type="web" url="file://$PROJECT_DIR$/herman-demo-springmvc-aggregation/herman-demo-app" />
+    <file type="web" url="file://$PROJECT_DIR$/herman-demo-springmvc-aggregation/herman-demo-manager" />
+    <file type="web" url="file://$PROJECT_DIR$/SpringMVC-Mybatis-shiro-master" />
+  </component>
+  <component name="MavenProjectsManager">
+    <option name="originalFiles">
+      <list>
+        <option value="$PROJECT_DIR$/herman-common/pom.xml" />
+        <option value="$PROJECT_DIR$/herman-demo-springmvc/pom.xml" />
+        <option value="$PROJECT_DIR$/herman-demo-springmvc-aggregation/herman-demo-bean/pom.xml" />
+        <option value="$PROJECT_DIR$/herman-demo-springmvc-aggregation/herman-demo-manager/pom.xml" />
+        <option value="$PROJECT_DIR$/herman-demo-springmvc-aggregation/herman-demo-app/pom.xml" />
+        <option value="$PROJECT_DIR$/SpringMVC-Mybatis-shiro-master/pom.xml" />
+      </list>
+    </option>
+  </component>
+  <component name="ProjectLevelVcsManager" settingsEditedManually="false">
+    <OptionsSetting value="true" id="Add" />
+    <OptionsSetting value="true" id="Remove" />
+    <OptionsSetting value="true" id="Checkout" />
+    <OptionsSetting value="true" id="Update" />
+    <OptionsSetting value="true" id="Status" />
+    <OptionsSetting value="true" id="Edit" />
+    <ConfirmationsSetting value="0" id="Add" />
+    <ConfirmationsSetting value="0" id="Remove" />
+  </component>
+  <component name="ProjectRootManager" version="2" languageLevel="JDK_1_3" default="false" assert-keyword="false" jdk-15="false" project-jdk-name="1.8" project-jdk-type="JavaSDK" />
+</project>
