@@ -23,19 +23,14 @@
         <outputRelativeToContentRoot value="true" />
         <processorPath useClasspath="true" />
         <module name="herman-common" />
-        <module name="herman-demo-app" />
-        <module name="herman-demo-bean" />
-        <module name="herman-demo-manager" />
-        <module name="herman-demo-springmvc" />
+        <module name="herman-gameserver-app" />
+        <module name="herman-gameserver-bean" />
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
       <module name="herman-common" target="1.5" />
-      <module name="herman-demo-app" target="1.7" />
-      <module name="herman-demo-bean" target="1.7" />
-      <module name="herman-demo-manager" target="1.7" />
-      <module name="herman-demo-springmvc" target="1.7" />
-      <module name="shiro.demo" target="1.7" />
+      <module name="herman-gameserver-app" target="1.7" />
+      <module name="herman-gameserver-bean" target="1.7" />
     </bytecodeTargetLevel>
   </component>
 </project>

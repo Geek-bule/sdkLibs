@@ -1,0 +1,290 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.herman.gameserver.dao.game.IGameRecordDAO">
+
+    <!--实体映射-->
+    <resultMap id="base_result_map" type="com.herman.gameserver.entity.game.GameRecord">
+        <!--主键-->
+        <id column="id" property="id"/>
+        <!--游戏id-->
+        <result column="game_id" property="gameId"/>
+        <!--账号内部识别标识-->
+        <result column="dg_account" property="dgAccount"/>
+        <!--游戏记录-->
+        <result column="record" property="record"/>
+        <!--创建时间-->
+        <result column="gmt_create" property="gmtCreate"/>
+        <!--更新时间-->
+        <result column="gmt_modified" property="gmtModified"/>
+        <!--是否删除（0：否，1：是）-->
+        <result column="is_deleted" property="isDeleted"/>
+    </resultMap>
+
+
+    <!-- 通用查询结果列-->
+    <sql id="base_column_list">
+		 id,game_id,dg_account,record,gmt_create,gmt_modified,is_deleted
+	</sql>
+
+    <sql id="base_condition_filed">
+        <if test="id != null">
+            and id = #{id}
+        </if>
+        <if test="gameId != null">
+            and game_id = #{gameId}
+        </if>
+        <if test="dgAccount != null and dgAccount!=''">
+            and dg_account = #{dgAccount}
+        </if>
+        <if test="record != null and record!=''">
+            and record = #{record}
+        </if>
+        <if test="gmtCreate != null">
+            and gmt_create = #{gmtCreate}
+        </if>
+        <if test="gmtModified != null">
+            and gmt_modified = #{gmtModified}
+        </if>
+        <if test="isDeleted != null">
+            and is_deleted = #{isDeleted}
+        </if>
+    </sql>
+    <!-- 通用条件列-->
+    <sql id="base_condition">
+        <where>
+            <include refid="base_condition_filed"/>
+        </where>
+    </sql>
+
+    <!-- 通用查询条件列-->
+    <sql id="query_condition">
+        <where>
+            <if test="dgAccount!= null  and dgAccount!=''">
+                and dg_account like concat('%', #{dgAccount}, '%')
+            </if>
+            <if test="record!= null  and record!=''">
+                and record like concat('%', #{record}, '%')
+            </if>
+            <if test="gmtCreate != null and gmtCreate !=''">
+                <![CDATA[ and  gmt_create = str_to_date('${gmtCreate}', '%Y-%m-%d') ]]>
+            </if>
+            <if test="gmtModified != null and gmtModified !=''">
+                <![CDATA[ and  gmt_modified = str_to_date('${gmtModified}', '%Y-%m-%d') ]]>
+            </if>
+        </where>
+    </sql>
+
+    <!-- 通用查询条件列，用于分页-->
+    <sql id="query_condition_page">
+        <where>
+            <if test="entity.dgAccount!= null  and entity.dgAccount!=''">
+                and dg_account like concat('%', #{entity.dgAccount}, '%')
+            </if>
+            <if test="entity.record!= null  and entity.record!=''">
+                and record like concat('%', #{entity.record}, '%')
+            </if>
+            <if test="entity.gmtCreate != null and entity.gmtCreate !=''">
+                <![CDATA[ and  gmt_create = str_to_date('${entity.gmtCreate}', '%Y-%m-%d') ]]>
+            </if>
+            <if test="entity.gmtModified != null and entity.gmtModified !=''">
+                <![CDATA[ and  gmt_modified = str_to_date('${entity.gmtModified}', '%Y-%m-%d') ]]>
+            </if>
+        </where>
+    </sql>
+
+    <!-- 查询集合-->
+    <select id="selectList" resultMap="base_result_map">
+        SELECT
+        <include refid="base_column_list"/>
+        FROM game_record
+        <include refid="query_condition"/>
+    </select>
+
+    <!-- 分页查询集合-->
+    <select id="selectListPage" resultMap="base_result_map">
+        SELECT
+        <include refid="base_column_list"/>
+        FROM game_record
+        <include refid="query_condition_page"/>
+    </select>
+
+    <!-- 查询数量-->
+    <select id="selectCount" resultType="java.lang.Integer">
+        SELECT count(1) FROM game_record
+        <include refid="query_condition"/>
+    </select>
+
+    <!-- 插入 （匹配有值的字段）-->
+    <insert id="insert" parameterType="com.herman.gameserver.entity.game.GameRecord">
+        <selectKey keyProperty="id" resultType="Long" order="AFTER">
+            SELECT LAST_INSERT_ID()
+        </selectKey>
+        INSERT INTO game_record
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="gameId != null">
+                game_id,
+            </if>
+            <if test="dgAccount != null">
+                dg_account,
+            </if>
+            <if test="record != null">
+                record,
+            </if>
+            <if test="gmtCreate != null">
+                gmt_create,
+            </if>
+            <if test="gmtModified != null">
+                gmt_modified,
+            </if>
+            <if test="isDeleted != null">
+                is_deleted,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="gameId!=null">
+                #{gameId},
+            </if>
+            <if test="dgAccount!=null">
+                #{dgAccount},
+            </if>
+            <if test="record!=null">
+                #{record},
+            </if>
+            <if test="gmtCreate!=null">
+                #{gmtCreate},
+            </if>
+            <if test="gmtModified!=null">
+                #{gmtModified},
+            </if>
+            <if test="isDeleted!=null">
+                #{isDeleted},
+            </if>
+        </trim>
+    </insert>
+
+    <!-- 插入或者更新 （匹配有值的字段）-->
+    <insert id="insertOrUpdate" parameterType="com.herman.gameserver.entity.game.GameRecord">
+        INSERT INTO game_record
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                id,
+            </if>
+            <if test="gameId != null">
+                game_id,
+            </if>
+            <if test="dgAccount != null">
+                dg_account,
+            </if>
+            <if test="record != null">
+                record,
+            </if>
+            <if test="gmtCreate != null">
+                gmt_create,
+            </if>
+            <if test="gmtModified != null">
+                gmt_modified,
+            </if>
+            <if test="isDeleted != null">
+                is_deleted,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id!=null">
+                #{id},
+            </if>
+            <if test="gameId!=null">
+                #{gameId},
+            </if>
+            <if test="dgAccount!=null">
+                #{dgAccount},
+            </if>
+            <if test="record!=null">
+                #{record},
+            </if>
+            <if test="gmtCreate!=null">
+                #{gmtCreate},
+            </if>
+            <if test="gmtModified!=null">
+                #{gmtModified},
+            </if>
+            <if test="isDeleted!=null">
+                #{isDeleted},
+            </if>
+        </trim>
+        on DUPLICATE key
+        <trim prefix="" suffix="" suffixOverrides=",">
+            <if test="gameId!=null">
+                game_id = VALUES(game_id),
+            </if>
+            <if test="dgAccount!=null">
+                dg_account = VALUES(dg_account),
+            </if>
+            <if test="record!=null">
+                record = VALUES(record),
+            </if>
+            <if test="gmtCreate!=null">
+                gmt_create = VALUES(gmt_create),
+            </if>
+            <if test="gmtModified!=null">
+                gmt_modified = VALUES(gmt_modified),
+            </if>
+            <if test="isDeleted!=null">
+                is_deleted = VALUES(is_deleted),
+            </if>
+        </trim>
+    </insert>
+
+    <!-- 添加 （批量插入）-->
+    <insert id="insertBatch" parameterType="com.herman.gameserver.entity.game.GameRecord">
+        INSERT INTO game_record(game_id,dg_account,record,gmt_create,gmt_modified,is_deleted)values
+        <foreach collection="list" item="item" separator=",">
+            (
+            #{item.gameId},#{item.dgAccount},#{item.record},#{item.gmtCreate},#{item.gmtModified},#{item.isDeleted}
+            )
+        </foreach>
+    </insert>
+
+    <!-- 根据IdAndGameId修改-->
+    <update id="updateByIdAndGameId" parameterType="com.herman.gameserver.entity.game.GameRecord">
+        UPDATE game_record
+        <set>
+            <if test="bean.dgAccount != null">
+                dg_account = #{bean.dgAccount},
+            </if>
+            <if test="bean.record != null">
+                record = #{bean.record},
+            </if>
+            <if test="bean.gmtCreate != null">
+                gmt_create = #{bean.gmtCreate},
+            </if>
+            <if test="bean.gmtModified != null">
+                gmt_modified = #{bean.gmtModified},
+            </if>
+            <if test="bean.isDeleted != null">
+                is_deleted = #{bean.isDeleted},
+            </if>
+        </set>
+        where id=#{id} and game_id=#{gameId}
+    </update>
+
+    <!-- 根据IdAndGameId删除-->
+    <delete id="deleteByIdAndGameId">
+		delete from game_record where id=#{id} and game_id=#{gameId}
+	</delete>
+
+    <!-- 根据PrimaryKey获取对象-->
+    <select id="selectByIdAndGameId" resultMap="base_result_map">
+        select
+        <include refid="base_column_list"/>
+        from game_record where id=#{id} and game_id=#{gameId}
+    </select>
+
+    <!-- 根据PrimaryKey获取对象-->
+    <select id="selectByGameIdAndDgAccount" resultMap="base_result_map">
+        select
+        <include refid="base_column_list"/>
+        from game_record where game_id=#{gameId} and dg_account=#{dgAccount}
+    </select>
+
+</mapper>

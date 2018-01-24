@@ -1,0 +1,12 @@
+/Users/apple/Documents/GitHub/sdkLibs/herman/herman-gameserver-aggregation/herman-gameserver-bean/src/main/java/com/herman/gameserver/entity/member/Member.java
+/Users/apple/Documents/GitHub/sdkLibs/herman/herman-gameserver-aggregation/herman-gameserver-bean/src/main/java/com/herman/gameserver/entity/mobile/MobileIos.java
+/Users/apple/Documents/GitHub/sdkLibs/herman/herman-gameserver-aggregation/herman-gameserver-bean/src/main/java/com/herman/gameserver/entity/game/GameRecord.java
+/Users/apple/Documents/GitHub/sdkLibs/herman/herman-gameserver-aggregation/herman-gameserver-bean/src/main/java/com/herman/gameserver/entity/game/Game.java
+/Users/apple/Documents/GitHub/sdkLibs/herman/herman-gameserver-aggregation/herman-gameserver-bean/src/main/java/com/herman/gameserver/dao/game/IGameRecordDAO.java
+/Users/apple/Documents/GitHub/sdkLibs/herman/herman-gameserver-aggregation/herman-gameserver-bean/src/main/java/com/herman/gameserver/dao/game/IGameDAO.java
+/Users/apple/Documents/GitHub/sdkLibs/herman/herman-gameserver-aggregation/herman-gameserver-bean/src/main/java/com/herman/gameserver/dao/mobile/IMobileAndroidDAO.java
+/Users/apple/Documents/GitHub/sdkLibs/herman/herman-gameserver-aggregation/herman-gameserver-bean/src/main/java/com/herman/gameserver/dao/mobile/IMobileIosDAO.java
+/Users/apple/Documents/GitHub/sdkLibs/herman/herman-gameserver-aggregation/herman-gameserver-bean/src/main/java/com/herman/gameserver/entity/mobile/MobileAndroid.java
+/Users/apple/Documents/GitHub/sdkLibs/herman/herman-gameserver-aggregation/herman-gameserver-bean/src/main/java/com/herman/gameserver/dao/member/IMemberDAO.java
+/Users/apple/Documents/GitHub/sdkLibs/herman/herman-gameserver-aggregation/herman-gameserver-bean/src/main/java/com/herman/gameserver/service/game/IGameRecordService.java
+/Users/apple/Documents/GitHub/sdkLibs/herman/herman-gameserver-aggregation/herman-gameserver-bean/src/main/java/com/herman/gameserver/service/game/impl/GameRecordServiceImpl.java

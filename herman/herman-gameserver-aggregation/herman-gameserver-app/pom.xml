@@ -1,0 +1,103 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <groupId>com.herman.gameserver.app</groupId>
+    <artifactId>herman-gameserver-app</artifactId>
+    <packaging>war</packaging>
+    <version>1.0-SNAPSHOT</version>
+    <name>herman-gameserver-app</name>
+    <url>http://maven.apache.org</url>
+    <properties>
+        <jdk.version>1.7</jdk.version>
+    </properties>
+
+    <profiles>
+
+        <profile>
+            <id>local</id>
+            <properties>
+                <jdbc.driverClassName>com.mysql.jdbc.Driver</jdbc.driverClassName>
+                <jdbc.url>jdbc:mysql://112.74.63.36:3306/duogu?useUnicode=true&amp;amp;characterEncoding=utf-8</jdbc.url>
+                <jdbc.username>root</jdbc.username>
+                <jdbc.password>146286</jdbc.password>
+            </properties>
+        </profile>
+
+        <profile>
+            <id>uat</id>
+            <properties>
+                <jdbc.driverClassName>com.mysql.jdbc.Driver</jdbc.driverClassName>
+                <jdbc.url>jdbc:mysql://localhost:3306/webuser?useUnicode=true&amp;characterEncoding=utf-8</jdbc.url>
+                <jdbc.username>root</jdbc.username>
+                <jdbc.password>146286</jdbc.password>
+            </properties>
+        </profile>
+
+    </profiles>
+
+    <dependencies>
+
+        <!-- sitemesh begin -->
+        <dependency>
+            <groupId>org.sitemesh</groupId>
+            <artifactId>sitemesh</artifactId>
+            <version>3.0.0</version>
+        </dependency>
+        <!-- sitemesh end -->
+
+        <!-- herman begin -->
+        <dependency>
+            <groupId>com.herman.common</groupId>
+            <artifactId>herman-common</artifactId>
+            <version>1.0.0</version>
+        </dependency>
+        <dependency>
+            <groupId>com.herman.gameserver.bean</groupId>
+            <artifactId>herman-gameserver-bean</artifactId>
+            <version>1.0.0</version>
+        </dependency>
+        <!-- herman end -->
+
+    </dependencies>
+
+    <build>
+        <finalName>herman-gameserver-app</finalName>
+        <plugins>
+            <plugin>
+                <artifactId>maven-deploy-plugin</artifactId>
+                <version>2.6</version>
+                <configuration>
+                    <skip>true</skip>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <configuration>
+                    <encoding>${project.build.sourceEncoding}</encoding>
+                    <source>${jdk.version}</source>
+                    <target>${jdk.version}</target>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-resources-plugin</artifactId>
+            </plugin>
+            <plugin>
+                <groupId>org.mule.tools</groupId>
+                <artifactId>maven-mule-plugin</artifactId>
+                <version>1.9</version>
+            </plugin>
+        </plugins>
+        <resources>
+            <resource>
+                <directory>${project.basedir}/src/main/resources</directory>
+                <filtering>true</filtering>
+            </resource>
+        </resources>
+        <filters>
+            <filter>${project.basedir}/src/main/resources/conf/config.properties</filter>
+        </filters>
+    </build>
+
+</project>

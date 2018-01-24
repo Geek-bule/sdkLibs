@@ -1,8 +1,0 @@
-<component name="ArtifactManager">
-  <artifact type="war" name="herman-demo-manager:war">
-    <output-path>$PROJECT_DIR$/herman-demo-manager/target</output-path>
-    <root id="archive" name="herman-demo-manager.war">
-      <element id="artifact" artifact-name="herman-demo-manager:war exploded" />
-    </root>
-  </artifact>
-</component>

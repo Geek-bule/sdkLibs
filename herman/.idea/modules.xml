@@ -4,9 +4,10 @@
     <modules>
       <module fileurl="file://$PROJECT_DIR$/.idea/herman.iml" filepath="$PROJECT_DIR$/.idea/herman.iml" />
       <module fileurl="file://$PROJECT_DIR$/herman-common/herman-common.iml" filepath="$PROJECT_DIR$/herman-common/herman-common.iml" />
-      <module fileurl="file://$PROJECT_DIR$/herman-demo-springmvc-aggregation/herman-demo-app/herman-demo-app.iml" filepath="$PROJECT_DIR$/herman-demo-springmvc-aggregation/herman-demo-app/herman-demo-app.iml" />
-      <module fileurl="file://$PROJECT_DIR$/herman-demo-springmvc-aggregation/herman-demo-bean/herman-demo-bean.iml" filepath="$PROJECT_DIR$/herman-demo-springmvc-aggregation/herman-demo-bean/herman-demo-bean.iml" />
-      <module fileurl="file://$PROJECT_DIR$/herman-demo-springmvc-aggregation/herman-demo-manager/herman-demo-manager.iml" filepath="$PROJECT_DIR$/herman-demo-springmvc-aggregation/herman-demo-manager/herman-demo-manager.iml" />
+      <module fileurl="file://$PROJECT_DIR$/herman-gameserver-aggregation/herman-gameserver-app/herman-gameserver-app.iml" filepath="$PROJECT_DIR$/herman-gameserver-aggregation/herman-gameserver-app/herman-gameserver-app.iml" />
+      <module fileurl="file://$PROJECT_DIR$/herman-gameserver-springmvc-aggregation/herman-gameserver-app/herman-gameserver-app.iml" filepath="$PROJECT_DIR$/herman-gameserver-springmvc-aggregation/herman-gameserver-app/herman-gameserver-app.iml" />
+      <module fileurl="file://$PROJECT_DIR$/herman-gameserver-aggregation/herman-gameserver-bean/herman-gameserver-bean.iml" filepath="$PROJECT_DIR$/herman-gameserver-aggregation/herman-gameserver-bean/herman-gameserver-bean.iml" />
+      <module fileurl="file://$PROJECT_DIR$/herman-gameserver-springmvc-aggregation/herman-gameserver-bean/herman-gameserver-bean.iml" filepath="$PROJECT_DIR$/herman-gameserver-springmvc-aggregation/herman-gameserver-bean/herman-gameserver-bean.iml" />
     </modules>
   </component>
 </project>
