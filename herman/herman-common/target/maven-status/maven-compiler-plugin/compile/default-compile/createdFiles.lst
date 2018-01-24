@@ -1,7 +1,0 @@
-com/herman/common/bean/CommonEntity.class
-com/herman/common/util/DateUtil.class
-com/herman/common/util/JsonUtil.class
-com/herman/common/util/ConstantUtil.class
-com/herman/common/bean/PageParameter.class
-com/herman/common/bean/DeviceType.class
-com/herman/common/util/IpUtil.class

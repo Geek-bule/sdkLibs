@@ -1,5 +1,6 @@
 package com.herman.gameserver.game.controller;
 
+import com.herman.common.bean.ResponseBean;
 import com.herman.gameserver.common.controller.BaseController;
 import com.herman.gameserver.entity.game.GameRecord;
 import com.herman.gameserver.service.game.IGameRecordService;
@@ -27,18 +28,14 @@ public class GameRecordController extends BaseController {
 
     @RequestMapping(value = "/get", method = RequestMethod.GET)
     @ResponseBody
-    public Map<String, Object> getGameRecord(@RequestParam("gameId") Long gameId, @RequestParam("dgAccount") String dgAccount){
-        Map<String, Object> result = new HashMap<String, Object>();
-        try {
-            GameRecord gameRecord = gameRecordService.getGameRecord(gameId, dgAccount);
-            result.put("code", "0"); // success
-            result.put("message", "success");
-            result.put("record", gameRecord.getRecord());
-        } catch (Exception e) {
-            result.put("code", "1"); // fail
-            result.put("message", e.getMessage());
+    public ResponseBean getGameRecord(@RequestParam("gameId") Long gameId, @RequestParam("dgAccount") String dgAccount) throws Exception {
+        GameRecord gameRecord = gameRecordService.getGameRecord(gameId, dgAccount);
+        if(gameRecord == null) {
+            ResponseBean result = new ResponseBean();
+            result.fail();
+            return result;
         }
-        return result;
+        return new ResponseBean(gameRecord.getRecord());
     }
 
 }

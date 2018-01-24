@@ -46,8 +46,8 @@
     </bean>
 
     <!-- 统一异常处理 -->
-    <!--<bean id="handlerExceptionResolver" class="com.zongyi.gameserver.common.exception.JZExceptionHandler">-->
-        <!--<property name="defaultErrorView" value="error"/>-->
-    <!--</bean>-->
+    <bean id="handlerExceptionResolver" class="com.herman.gameserver.common.exception.UnifiedExceptionHandler">
+        <property name="defaultErrorView" value="error"/>
+    </bean>
 
 </beans>
