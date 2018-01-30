@@ -29,6 +29,15 @@ public interface IMobileIosDAO {
      */
     MobileIos selectById(@Param("id") Long id);
 
+    /**
+     * 根据dg_udid获取对象
+     */
+    MobileIos selectByDgudid(@Param("dg_udid") String dg_udid);
+
+    /**
+     * 根据idfa获取对象
+     */
+    MobileIos selectByIdfa(@Param("idfa") String idfa);
 
     /**
      * 查询集合

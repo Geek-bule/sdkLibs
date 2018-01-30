@@ -317,5 +317,15 @@
         <include refid="base_column_list"/>
         from mobile_ios where id=#{id}
     </select>
+    <select id="selectByDgudid" resultMap="base_result_map">
+        select
+        <include refid="base_column_list"/>
+        from mobile_ios where dg_udid=#{dg_udid}
+    </select>
+    <select id="selectByIdfa" resultMap="base_result_map">
+        select
+        <include refid="base_column_list"/>
+        from mobile_ios where idfa=#{idfa}
+    </select>
 
 </mapper>

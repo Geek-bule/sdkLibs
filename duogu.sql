@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50629
 File Encoding         : 65001
 
-Date: 2018-01-17 08:37:14
+Date: 2018-01-26 17:25:14
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -47,13 +47,15 @@ CREATE TABLE `game_record` (
   `gmt_modified` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '更新时间',
   `is_deleted` tinyint(2) NOT NULL DEFAULT '0' COMMENT '是否删除（0：否，1：是）',
   PRIMARY KEY (`id`,`game_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='游戏记录表'
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8 COMMENT='游戏记录表'
 /*!50100 PARTITION BY LIST (game_id)
-(PARTITION p1 VALUES IN (1) ENGINE = InnoDB) */;
+(PARTITION p1 VALUES IN (1) ENGINE = InnoDB,
+ PARTITION p2 VALUES IN (2) ENGINE = InnoDB) */;
 
 -- ----------------------------
 -- Records of game_record
 -- ----------------------------
+INSERT INTO `game_record` VALUES ('1', '1', 'herman', '12321321321', '2018-01-17 13:49:20', '2018-01-17 13:49:20', '0');
 
 -- ----------------------------
 -- Table structure for member
@@ -75,7 +77,8 @@ CREATE TABLE `member` (
   PRIMARY KEY (`id`,`game_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='用户账号表'
 /*!50100 PARTITION BY LIST (game_id)
-(PARTITION p1 VALUES IN (1) ENGINE = InnoDB) */;
+(PARTITION p1 VALUES IN (1) ENGINE = InnoDB,
+ PARTITION p2 VALUES IN (2) ENGINE = InnoDB) */;
 
 -- ----------------------------
 -- Records of member
@@ -122,16 +125,33 @@ CREATE TABLE `mobile_ios` (
 -- ----------------------------
 
 -- ----------------------------
--- Procedure structure for pro_add_game_partition
+-- Table structure for sequence
 -- ----------------------------
-DROP PROCEDURE IF EXISTS `pro_add_game_partition`;
+DROP TABLE IF EXISTS `sequence`;
+CREATE TABLE `sequence` (
+  `name` varchar(50) NOT NULL,
+  `current` int(20) NOT NULL,
+  `increment` int(11) NOT NULL DEFAULT '1',
+  PRIMARY KEY (`name`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='序列表';
+
+-- ----------------------------
+-- Records of sequence
+-- ----------------------------
+INSERT INTO `sequence` VALUES ('dgAccount#1', '2', '1');
+INSERT INTO `sequence` VALUES ('dgAccount#2', '0', '1');
+INSERT INTO `sequence` VALUES ('dgUdid', '143', '1');
+
+-- ----------------------------
+-- Procedure structure for pro_add_game
+-- ----------------------------
+DROP PROCEDURE IF EXISTS `pro_add_game`;
 DELIMITER ;;
-CREATE DEFINER=`root`@`localhost` PROCEDURE `pro_add_game_partition`(
-	IN game_id INT
-)
+CREATE DEFINER=`root`@`localhost` PROCEDURE `pro_add_game`(IN game_id INT)
 BEGIN
 	CALL pro_add_list_partition('game_record', CONCAT('p',game_id), game_id);
 	CALL pro_add_list_partition('member', CONCAT('p',game_id), game_id);
+	INSERT INTO `sequence` VALUES (CONCAT('dgAccount#', game_id), '0', '1');
 END
 ;;
 DELIMITER ;
@@ -154,5 +174,73 @@ BEGIN
 	EXECUTE stmt;
 	DEALLOCATE PREPARE stmt;
 END
+;;
+DELIMITER ;
+
+-- ----------------------------
+-- Function structure for fun_get_currval
+-- ----------------------------
+DROP FUNCTION IF EXISTS `fun_get_currval`;
+DELIMITER ;;
+CREATE DEFINER=`root`@`localhost` FUNCTION `fun_get_currval`(m_name VARCHAR(50)) RETURNS int(11)
+begin        
+	declare value integer;         
+	set value = 0;         
+	select current into value  from sequence where name = m_name;   
+	return value;   
+end
+;;
+DELIMITER ;
+
+-- ----------------------------
+-- Function structure for fun_get_dg_account
+-- ----------------------------
+DROP FUNCTION IF EXISTS `fun_get_dg_account`;
+DELIMITER ;;
+CREATE DEFINER=`root`@`localhost` FUNCTION `fun_get_dg_account`(game_id int(20)) RETURNS varchar(20) CHARSET utf8
+begin  
+	DECLARE seq INTEGER;  -- 当前序列号
+	DECLARE seqResult varchar(10);  -- 当前序列号处理结果
+	SELECT fun_get_nextval(CONCAT('dgAccount', '#', game_id)) INTO seq;
+	IF seq<100000000 THEN
+		SET seqResult = LPAD(seq, 8, 0);
+	ELSE
+		SET seqResult = seq;
+	END IF;
+	return CONCAT(game_id, 'dg', seqResult);  
+end
+;;
+DELIMITER ;
+
+-- ----------------------------
+-- Function structure for fun_get_dg_udid
+-- ----------------------------
+DROP FUNCTION IF EXISTS `fun_get_dg_udid`;
+DELIMITER ;;
+CREATE DEFINER=`root`@`localhost` FUNCTION `fun_get_dg_udid`() RETURNS varchar(20) CHARSET utf8
+begin  
+	DECLARE seq INTEGER;  -- 当前序列号
+	DECLARE seqResult varchar(10);  -- 当前序列号处理结果
+	SELECT fun_get_nextval('dgUdid') INTO seq;
+	IF seq<10000000000 THEN
+		SET seqResult = LPAD(seq, 10, 0);
+	ELSE
+		SET seqResult = seq;
+	END IF;
+	return CONCAT('dg', seqResult);  
+end
+;;
+DELIMITER ;
+
+-- ----------------------------
+-- Function structure for fun_get_nextval
+-- ----------------------------
+DROP FUNCTION IF EXISTS `fun_get_nextval`;
+DELIMITER ;;
+CREATE DEFINER=`root`@`localhost` FUNCTION `fun_get_nextval`(m_name VARCHAR(50)) RETURNS int(11)
+begin  
+	update sequence set current = current + increment where name = m_name;  
+	return fun_get_currval(m_name);  
+end
 ;;
 DELIMITER ;

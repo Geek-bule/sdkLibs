@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.UUID;
 
 /**
  * 游戏记录管理controller
@@ -26,7 +27,7 @@ public class GameRecordController extends BaseController {
     @Autowired
     private IGameRecordService gameRecordService;
 
-    @RequestMapping(value = "/get", method = RequestMethod.GET)
+    @RequestMapping(value = "/getGameRecord", method = RequestMethod.GET)
     @ResponseBody
     public ResponseBean getGameRecord(@RequestParam("gameId") Long gameId, @RequestParam("dgAccount") String dgAccount) throws Exception {
         GameRecord gameRecord = gameRecordService.getGameRecord(gameId, dgAccount);
@@ -35,6 +36,20 @@ public class GameRecordController extends BaseController {
             result.fail();
             return result;
         }
+        String id = "" + System.currentTimeMillis(); // 先这么写吧，获取时间
+        return new ResponseBean(gameRecord.getRecord());
+    }
+
+    @RequestMapping(value = "/pullGameRecord", method = RequestMethod.GET)
+    @ResponseBody
+    public ResponseBean pullGameRecord(@RequestParam("gameId") Long gameId, @RequestParam("dgAccount") String dgAccount) throws Exception {
+        GameRecord gameRecord = gameRecordService.getGameRecord(gameId, dgAccount);
+        if(gameRecord == null) {
+            ResponseBean result = new ResponseBean();
+            result.fail();
+            return result;
+        }
+        String id = "" + System.currentTimeMillis(); // 先这么写吧，获取时间
         return new ResponseBean(gameRecord.getRecord());
     }
 

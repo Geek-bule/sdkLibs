@@ -425,5 +425,15 @@
         <include refid="base_column_list"/>
         from member where id=#{id} and game_id=#{gameId}
     </select>
+    <select id="selectByGameAccount" resultMap="base_result_map">
+        select
+        <include refid="base_column_list"/>
+        from member where game_id=#{gameId} and platform_type=#{platform_type} and platform_account=#{platform_account}
+    </select>
+    <select id="selectByGameGuest" resultMap="base_result_map">
+        select
+        <include refid="base_column_list"/>
+        from member where game_id=#{gameId} and dg_udid=#{dg_udid}
+    </select>
 
 </mapper>
