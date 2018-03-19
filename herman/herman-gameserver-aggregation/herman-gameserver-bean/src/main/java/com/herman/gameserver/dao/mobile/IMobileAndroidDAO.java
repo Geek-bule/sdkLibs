@@ -59,5 +59,17 @@ public interface IMobileAndroidDAO {
      */
     List<MobileAndroid> selectListPage(@Param("page") PageParameter pageParameter, @Param("entity") MobileAndroid entity);
 
+    /** 以上自生成 */
+    /** 以下新增加 */
 
+    /**
+     * 根据imei获取对象
+     */
+    MobileAndroid selectByImei(@Param("imei") String imei);
+
+
+    /**
+     * 根据idfa获取对象
+     */
+    MobileAndroid selectByDgUdid(@Param("dgUdid") String dgUdid);
 }

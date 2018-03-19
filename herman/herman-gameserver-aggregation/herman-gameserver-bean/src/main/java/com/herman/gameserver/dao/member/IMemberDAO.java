@@ -29,16 +29,6 @@ public interface IMemberDAO {
      */
     Member selectByIdAndGameId(@Param("id") Long id, @Param("gameId") Long gameId);
 
-    /**
-     * 根据game_id、platform_type和platform_account获取对象
-     */
-    Member selectByGameAccount(@Param("game_id") Long game_id, @Param("platform_type") String platform_type, @Param("platform_account") String platform_account);
-
-    /**
-     * 根据game_id、dg_udid获取对象
-     */
-    Member selectByGameGuest(@Param("game_id") Long game_id, @Param("dg_udid") String dg_udid);
-
 
     /**
      * 查询集合
@@ -69,5 +59,20 @@ public interface IMemberDAO {
      */
     List<Member> selectListPage(@Param("page") PageParameter pageParameter, @Param("entity") Member entity);
 
+    /** 以上自生成 */
+    /** 以下新增加 */
+
+    /**
+     * 生成唯一游戏账号标识dgAccount
+     *
+     * @return
+     */
+    String getDgAccount(@Param("gameId") Long gameId);
+
+
+    /**
+     * 根据GameIdAndDgUdid获取对象
+     */
+    Member selectByGameIdAndDgAccount(@Param("gameId") Long gameId, @Param("dgUdid") String dgUdid);
 
 }

@@ -8,10 +8,6 @@ import com.herman.common.bean.CommonEntity;
 public class MobileAndroid extends CommonEntity {
 
     private static final long serialVersionUID = -5207838346327784993L;
-    /**
-     * 主键
-     */
-    private Long id;
 
     /**
      * 本平台生成的设备唯一标识
@@ -32,14 +28,6 @@ public class MobileAndroid extends CommonEntity {
      * 手机标识
      */
     private String address;
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public Long getId() {
-        return this.id;
-    }
 
     public void setDgUdid(String dgUdid) {
         this.dgUdid = dgUdid;
@@ -76,8 +64,7 @@ public class MobileAndroid extends CommonEntity {
     @Override
     public String toString() {
         return "MobileAndroid{" +
-                "id=" + id +
-                ", dgUdid='" + dgUdid + '\'' +
+                "dgUdid='" + dgUdid + '\'' +
                 ", imei='" + imei + '\'' +
                 ", androidId='" + androidId + '\'' +
                 ", address='" + address + '\'' +

@@ -1,6 +1,7 @@
 package com.herman.gameserver.common.exception;
 
 import com.herman.common.bean.ResponseBean;
+import com.herman.gameserver.common.constant.ErrorMsg;
 import net.sf.json.JSONObject;
 import org.apache.log4j.Logger;
 import org.springframework.http.HttpStatus;
@@ -14,8 +15,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.util.HashMap;
-import java.util.Map;
 
 /**
  * 统一异常捕获
@@ -49,8 +48,7 @@ public class UnifiedExceptionHandler extends SimpleMappingExceptionResolver {
         response.setCharacterEncoding("UTF-8");
         response.setHeader("Cache-Control", "no-cache, must-revalidate");
 
-        ResponseBean result = new ResponseBean();
-        result.serverError();
+        ResponseBean result = new ResponseBean(ErrorMsg.SERVER_ERR_CODE, ErrorMsg.getMsg(ErrorMsg.SERVER_ERR_CODE));
         try {
             PrintWriter writer = response.getWriter();
             writer.write(JSONObject.fromObject(result).toString());

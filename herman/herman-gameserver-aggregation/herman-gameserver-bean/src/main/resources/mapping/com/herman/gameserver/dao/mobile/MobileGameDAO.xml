@@ -1,0 +1,287 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.herman.gameserver.dao.mobile.MobileGameDAO">
+
+	<!--实体映射-->
+	<resultMap id="base_result_map" type="com.herman.gameserver.entity.mobile.MobileGame">
+		<!--物理ID-->
+		<id column="id" property="id"  />
+		<!--游戏id-->
+		<result column="game_id" property="gameId"  />
+		<!--本平台生成的设备唯一标识-->
+		<result column="dg_udid" property="dgUdid"  />
+		<!--版本号-->
+		<result column="version" property="version"  />
+		<!--创建时间-->
+		<result column="createTime" property="createtime"  />
+		<!--更新时间-->
+		<result column="updateTime" property="updatetime"  />
+		<!--是否删除（0：否，1：是）-->
+		<result column="is_deleted" property="isDeleted"  />
+	</resultMap>
+
+
+	<!-- 通用查询结果列-->
+	<sql id="base_column_list">
+		 id,game_id,dg_udid,version,createTime,updateTime,is_deleted
+	</sql>
+
+	<sql id="base_condition_filed">
+			<if test="id != null">
+				 and  id = #{id}
+			</if>
+			<if test="gameId != null">
+				 and  game_id = #{gameId}
+			</if>
+			<if test="dgUdid != null and dgUdid!=''">
+				 and  dg_udid = #{dgUdid}
+			</if>
+			<if test="version != null and version!=''">
+				 and  version = #{version}
+			</if>
+			<if test="createtime != null">
+				 and  createTime = #{createtime}
+			</if>
+			<if test="updatetime != null">
+				 and  updateTime = #{updatetime}
+			</if>
+			<if test="isDeleted != null">
+				 and  is_deleted = #{isDeleted}
+			</if>
+	</sql>
+	<!-- 通用条件列-->
+	<sql id="base_condition">
+	 <where> <include refid="base_condition_filed" />	 </where>
+	</sql>
+
+	<!-- 通用查询条件列-->
+	<sql id="query_condition">
+	 <where>
+			<if test="dgUdid!= null  and dgUdid!=''">
+				 and  dg_udid like concat('%', #{dgUdid}, '%')
+			</if>
+			<if test="version!= null  and version!=''">
+				 and  version like concat('%', #{version}, '%')
+			</if>
+			<if test="createtime != null and createtime !=''">
+				 <![CDATA[ and  createTime = str_to_date('${createtime}', '%Y-%m-%d') ]]>
+			</if>
+
+			<if test="updatetime != null and updatetime !=''">
+				 <![CDATA[ and  updateTime = str_to_date('${updatetime}', '%Y-%m-%d') ]]>
+			</if>
+
+	 </where>
+	</sql>
+
+	<!-- 通用查询条件列，用于分页-->
+	<sql id="query_condition_page">
+	 <where>
+			<if test="entity.dgUdid!= null  and entity.dgUdid!=''">
+				 and  dg_udid like concat('%', #{entity.dgUdid}, '%')
+			</if>
+			<if test="entity.version!= null  and entity.version!=''">
+				 and  version like concat('%', #{entity.version}, '%')
+			</if>
+			<if test="entity.createtime != null and entity.createtime !=''">
+				 <![CDATA[ and  createTime = str_to_date('${entity.createtime}', '%Y-%m-%d') ]]>
+			</if>
+
+			<if test="entity.updatetime != null and entity.updatetime !=''">
+				 <![CDATA[ and  updateTime = str_to_date('${entity.updatetime}', '%Y-%m-%d') ]]>
+			</if>
+
+	 </where>
+	</sql>
+
+	<!-- 查询集合-->
+	<select id="selectList" resultMap="base_result_map" >
+		 SELECT <include refid="base_column_list" /> FROM mobile_game <include refid="query_condition" />
+		 <if test="orderBy!=null">
+			 order by ${orderBy}
+		 </if>
+	</select>
+
+	<!-- 分页查询集合-->
+	<select id="selectListPage" resultMap="base_result_map" >
+		 SELECT <include refid="base_column_list" /> FROM mobile_game <include refid="query_condition_page" />
+		 <if test="orderBy!=null">
+			 order by ${orderBy}
+		 </if>
+	</select>
+
+	<!-- 查询数量-->
+	<select id="selectCount" resultType="java.lang.Integer" >
+		 SELECT count(1) FROM mobile_game <include refid="query_condition" />
+	</select>
+
+	<!-- 插入 （匹配有值的字段）-->
+	<insert id="insert" parameterType="com.herman.gameserver.entity.mobile.MobileGame">
+		<selectKey keyProperty="id" resultType="Long" order="AFTER">
+			SELECT LAST_INSERT_ID()
+		</selectKey>
+		 INSERT INTO mobile_game
+		 <trim prefix="(" suffix=")" suffixOverrides="," >
+			<if test="gameId != null">
+				 game_id,
+			</if>
+			<if test="dgUdid != null">
+				 dg_udid,
+			</if>
+			<if test="version != null">
+				 version,
+			</if>
+			<if test="createtime != null">
+				 createTime,
+			</if>
+			<if test="updatetime != null">
+				 updateTime,
+			</if>
+			<if test="isDeleted != null">
+				 is_deleted,
+			</if>
+		 </trim>
+		 <trim prefix="values (" suffix=")" suffixOverrides="," >
+			<if test="gameId!=null">
+				 #{gameId},
+			</if>
+			<if test="dgUdid!=null">
+				 #{dgUdid},
+			</if>
+			<if test="version!=null">
+				 #{version},
+			</if>
+			<if test="createtime!=null">
+				 #{createtime},
+			</if>
+			<if test="updatetime!=null">
+				 #{updatetime},
+			</if>
+			<if test="isDeleted!=null">
+				 #{isDeleted},
+			</if>
+		 </trim>
+	</insert>
+
+	<!-- 插入或者更新 （匹配有值的字段）-->
+	<insert id="insertOrUpdate" parameterType="com.herman.gameserver.entity.mobile.MobileGame">
+		 INSERT INTO mobile_game
+		 <trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="id != null">
+				 id,
+			</if>
+			<if test="gameId != null">
+				 game_id,
+			</if>
+			<if test="dgUdid != null">
+				 dg_udid,
+			</if>
+			<if test="version != null">
+				 version,
+			</if>
+			<if test="createtime != null">
+				 createTime,
+			</if>
+			<if test="updatetime != null">
+				 updateTime,
+			</if>
+			<if test="isDeleted != null">
+				 is_deleted,
+			</if>
+		 </trim>
+		 <trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="id!=null">
+				 #{id},
+			</if>
+			<if test="gameId!=null">
+				 #{gameId},
+			</if>
+			<if test="dgUdid!=null">
+				 #{dgUdid},
+			</if>
+			<if test="version!=null">
+				 #{version},
+			</if>
+			<if test="createtime!=null">
+				 #{createtime},
+			</if>
+			<if test="updatetime!=null">
+				 #{updatetime},
+			</if>
+			<if test="isDeleted!=null">
+				 #{isDeleted},
+			</if>
+		 </trim>
+		 on DUPLICATE key
+		 <trim prefix="" suffix="" suffixOverrides=",">
+			<if test="gameId!=null">
+				 game_id = VALUES(game_id),
+			</if>
+			<if test="dgUdid!=null">
+				 dg_udid = VALUES(dg_udid),
+			</if>
+			<if test="version!=null">
+				 version = VALUES(version),
+			</if>
+			<if test="createtime!=null">
+				 createTime = VALUES(createTime),
+			</if>
+			<if test="updatetime!=null">
+				 updateTime = VALUES(updateTime),
+			</if>
+			<if test="isDeleted!=null">
+				 is_deleted = VALUES(is_deleted),
+			</if>
+		 </trim>
+	</insert>
+
+	<!-- 添加 （批量插入）-->
+	<insert id="insertBatch" parameterType="com.herman.gameserver.entity.mobile.MobileGame">
+		 INSERT INTO mobile_game(game_id,dg_udid,version,createTime,updateTime,is_deleted)values
+		<foreach collection="list" item="item" separator=",">
+		 (
+		 #{item.gameId},#{item.dgUdid},#{item.version},#{item.createtime},#{item.updatetime},#{item.isDeleted}
+			 )
+		</foreach>
+	</insert>
+
+	<!-- 根据IdAndGameId修改-->
+	<update id="updateByIdAndGameId" parameterType="com.herman.gameserver.entity.mobile.MobileGame">
+		 UPDATE mobile_game
+ 		 <set> 
+			<if test="bean.dgUdid != null">
+				 dg_udid = #{bean.dgUdid},
+			</if>
+			<if test="bean.version != null">
+				 version = #{bean.version},
+			</if>
+			<if test="bean.createtime != null">
+				 createTime = #{bean.createtime},
+			</if>
+			<if test="bean.updatetime != null">
+				 updateTime = #{bean.updatetime},
+			</if>
+			<if test="bean.isDeleted != null">
+				 is_deleted = #{bean.isDeleted},
+			</if>
+ 		 </set>
+ 		 where id=#{id} and game_id=#{gameId}
+	</update>
+
+	<!-- 根据IdAndGameId删除-->
+	<delete id="deleteByIdAndGameId">
+		delete from mobile_game where id=#{id} and game_id=#{gameId}
+	</delete>
+
+	<!-- 根据PrimaryKey获取对象-->
+	<select id="selectByIdAndGameId" resultMap="base_result_map" >
+		select <include refid="base_column_list" /> from mobile_game where id=#{id} and game_id=#{gameId}
+	</select>
+
+	<!-- 根据PrimaryKey获取对象-->
+	<select id="selectByDgudidAndGameId" resultMap="base_result_map" >
+		select <include refid="base_column_list" /> from mobile_game where dg_udid=#{dgUdid} and game_id=#{gameId}
+	</select>
+
+</mapper>

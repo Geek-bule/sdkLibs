@@ -29,15 +29,6 @@ public interface IMobileIosDAO {
      */
     MobileIos selectById(@Param("id") Long id);
 
-    /**
-     * 根据dg_udid获取对象
-     */
-    MobileIos selectByDgudid(@Param("dg_udid") String dg_udid);
-
-    /**
-     * 根据idfa获取对象
-     */
-    MobileIos selectByIdfa(@Param("idfa") String idfa);
 
     /**
      * 查询集合
@@ -67,6 +58,20 @@ public interface IMobileIosDAO {
      * 分页查询集合（匹配有值的字段）
      */
     List<MobileIos> selectListPage(@Param("page") PageParameter pageParameter, @Param("entity") MobileIos entity);
+
+    /** 以上自生成 */
+    /** 以下新增加 */
+
+    /**
+     * 根据idfa获取对象
+     */
+    MobileIos selectByIdfa(@Param("idfa") String idfa);
+
+
+    /**
+     * 根据idfa获取对象
+     */
+    MobileIos selectByDgUdid(@Param("dgUdid") String dgUdid);
 
 
 }

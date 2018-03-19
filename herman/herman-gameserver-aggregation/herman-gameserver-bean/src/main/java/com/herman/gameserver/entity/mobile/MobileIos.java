@@ -1,18 +1,16 @@
 package com.herman.gameserver.entity.mobile;
 
+import com.herman.common.bean.CommonEntity;
+
 import java.io.Serializable;
 
 
 /**
  * ios手机信息表
  */
-public class MobileIos implements Serializable {
+public class MobileIos extends CommonEntity {
 
     private static final long serialVersionUID = 5732711137427155212L;
-    /**
-     * 主键
-     */
-    private Long id;
 
     /**
      * 本平台生成的设备唯一标识
@@ -33,14 +31,6 @@ public class MobileIos implements Serializable {
      * 手机标识
      */
     private String openUdid;
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public Long getId() {
-        return this.id;
-    }
 
     public void setDgUdid(String dgUdid) {
         this.dgUdid = dgUdid;
@@ -77,11 +67,10 @@ public class MobileIos implements Serializable {
     @Override
     public String toString() {
         return "MobileIos{" +
-                "id=" + id +
-                ", dgUdid='" + dgUdid + '\'' +
+                "dgUdid='" + dgUdid + '\'' +
                 ", idfa='" + idfa + '\'' +
                 ", idfv='" + idfv + '\'' +
                 ", openUdid='" + openUdid + '\'' +
-                '}';
+                "} " + super.toString();
     }
 }

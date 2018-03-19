@@ -15,7 +15,7 @@ public interface IGameRecordDAO {
     /**
      * 根据IdAndGameId更新
      */
-    Integer updateByIdAndGameId(@Param("bean") GameRecord bean, @Param("id") Long id, @Param("gameId") Long gameId);
+    Integer updateById(@Param("bean") GameRecord bean, @Param("id") Long id);
 
 
     /**
@@ -59,6 +59,8 @@ public interface IGameRecordDAO {
      */
     List<GameRecord> selectListPage(@Param("page") PageParameter pageParameter, @Param("entity") GameRecord entity);
 
+    /** 以上自生成 */
+    /** 以下新增加 */
 
     /**
      * 根据GameIdAndDgAccount获取对象

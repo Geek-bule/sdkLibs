@@ -17,19 +17,29 @@
             <id>local</id>
             <properties>
                 <jdbc.driverClassName>com.mysql.jdbc.Driver</jdbc.driverClassName>
-                <jdbc.url>jdbc:mysql://112.74.63.36:3306/duogu?useUnicode=true&amp;amp;characterEncoding=utf-8</jdbc.url>
+                <jdbc.url>jdbc:mysql://127.0.0.1:3306/duogu</jdbc.url>
                 <jdbc.username>root</jdbc.username>
                 <jdbc.password>146286</jdbc.password>
             </properties>
         </profile>
 
         <profile>
-            <id>uat</id>
+            <id>dev</id>
             <properties>
                 <jdbc.driverClassName>com.mysql.jdbc.Driver</jdbc.driverClassName>
-                <jdbc.url>jdbc:mysql://localhost:3306/webuser?useUnicode=true&amp;characterEncoding=utf-8</jdbc.url>
+                <jdbc.url>jdbc:mysql://112.74.63.36:3306/duogu</jdbc.url>
                 <jdbc.username>root</jdbc.username>
                 <jdbc.password>146286</jdbc.password>
+            </properties>
+        </profile>
+
+        <profile>
+            <id>pdt</id>
+            <properties>
+                <jdbc.driverClassName>com.mysql.jdbc.Driver</jdbc.driverClassName>
+                <jdbc.url>jdbc:mysql://127.0.0.1:3306/duogu</jdbc.url>
+                <jdbc.username>root</jdbc.username>
+                <jdbc.password>jbHYrBpE#8Gk</jdbc.password>
             </properties>
         </profile>
 
@@ -37,18 +47,10 @@
 
     <dependencies>
 
-        <!-- sitemesh begin -->
-        <dependency>
-            <groupId>org.sitemesh</groupId>
-            <artifactId>sitemesh</artifactId>
-            <version>3.0.0</version>
-        </dependency>
-        <!-- sitemesh end -->
-
         <!-- herman begin -->
         <dependency>
-            <groupId>com.herman.common</groupId>
-            <artifactId>herman-common</artifactId>
+            <groupId>com.herman.common124</groupId>
+            <artifactId>herman-common124</artifactId>
             <version>1.0.0</version>
         </dependency>
         <dependency>
@@ -61,7 +63,7 @@
     </dependencies>
 
     <build>
-        <finalName>herman-gameserver-app</finalName>
+        <finalName>ROOT</finalName>
         <plugins>
             <plugin>
                 <artifactId>maven-deploy-plugin</artifactId>

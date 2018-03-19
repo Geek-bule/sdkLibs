@@ -1,0 +1,320 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.herman.gameserver.dao.push.PushRuleDAO">
+
+	<!--实体映射-->
+	<resultMap id="base_result_map" type="com.herman.gameserver.entity.push.PushRule">
+		<!--物理ID-->
+		<id column="id" property="id"  />
+		<!--游戏ID-->
+		<result column="game_code" property="gameCode"  />
+		<!--手机系统类型（android，ios）-->
+		<result column="mobile_type" property="mobileType"  />
+		<!--推送的游戏ID-->
+		<result column="push_game_code" property="pushGameCode"  />
+		<!--百分比-->
+		<result column="percent" property="percent"  />
+		<!--创建时间-->
+		<result column="gmt_create" property="gmtCreate"  />
+		<!--更新时间-->
+		<result column="gmt_modified" property="gmtModified"  />
+		<!--是否删除（0：否，1：是）-->
+		<result column="is_deleted" property="isDeleted"  />
+	</resultMap>
+
+
+	<!-- 通用查询结果列-->
+	<sql id="base_column_list">
+		 id,game_code,mobile_type,push_game_code,percent,gmt_create,gmt_modified,is_deleted
+	</sql>
+
+	<sql id="base_condition_filed">
+			<if test="id != null">
+				 and  id = #{id}
+			</if>
+			<if test="gameCode != null and gameCode!=''">
+				 and  game_code = #{gameCode}
+			</if>
+			<if test="mobileType != null and mobileType!=''">
+				 and  mobile_type = #{mobileType}
+			</if>
+			<if test="pushGameCode != null and pushGameCode!=''">
+				 and  push_game_code = #{pushGameCode}
+			</if>
+			<if test="percent != null">
+				 and  percent = #{percent}
+			</if>
+			<if test="gmtCreate != null">
+				 and  gmt_create = #{gmtCreate}
+			</if>
+			<if test="gmtModified != null">
+				 and  gmt_modified = #{gmtModified}
+			</if>
+			<if test="isDeleted != null">
+				 and  is_deleted = #{isDeleted}
+			</if>
+	</sql>
+	<!-- 通用条件列-->
+	<sql id="base_condition">
+	 <where> <include refid="base_condition_filed" />	 </where>
+	</sql>
+
+	<!-- 通用查询条件列-->
+	<sql id="query_condition">
+	 <where>
+			<if test="gameCode!= null  and gameCode!=''">
+				 and  game_code like concat('%', #{gameCode}, '%')
+			</if>
+			<if test="mobileType!= null  and mobileType!=''">
+				 and  mobile_type like concat('%', #{mobileType}, '%')
+			</if>
+			<if test="pushGameCode!= null  and pushGameCode!=''">
+				 and  push_game_code like concat('%', #{pushGameCode}, '%')
+			</if>
+			<if test="gmtCreate != null and gmtCreate !=''">
+				 <![CDATA[ and  gmt_create = str_to_date('${gmtCreate}', '%Y-%m-%d') ]]>
+			</if>
+
+			<if test="gmtModified != null and gmtModified !=''">
+				 <![CDATA[ and  gmt_modified = str_to_date('${gmtModified}', '%Y-%m-%d') ]]>
+			</if>
+
+	 </where>
+	</sql>
+
+	<!-- 通用查询条件列，用于分页-->
+	<sql id="query_condition_page">
+	 <where>
+			<if test="entity.gameCode!= null  and entity.gameCode!=''">
+				 and  game_code like concat('%', #{entity.gameCode}, '%')
+			</if>
+			<if test="entity.mobileType!= null  and entity.mobileType!=''">
+				 and  mobile_type like concat('%', #{entity.mobileType}, '%')
+			</if>
+			<if test="entity.pushGameCode!= null  and entity.pushGameCode!=''">
+				 and  push_game_code like concat('%', #{entity.pushGameCode}, '%')
+			</if>
+			<if test="entity.gmtCreate != null and entity.gmtCreate !=''">
+				 <![CDATA[ and  gmt_create = str_to_date('${entity.gmtCreate}', '%Y-%m-%d') ]]>
+			</if>
+
+			<if test="entity.gmtModified != null and entity.gmtModified !=''">
+				 <![CDATA[ and  gmt_modified = str_to_date('${entity.gmtModified}', '%Y-%m-%d') ]]>
+			</if>
+
+	 </where>
+	</sql>
+
+	<!-- 查询集合-->
+	<select id="selectList" resultMap="base_result_map" >
+		 SELECT <include refid="base_column_list" /> FROM push_rule <include refid="query_condition" />
+		 <if test="orderBy!=null">
+			 order by ${orderBy}
+		 </if>
+	</select>
+
+	<!-- 分页查询集合-->
+	<select id="selectListPage" resultMap="base_result_map" >
+		 SELECT <include refid="base_column_list" /> FROM push_rule <include refid="query_condition_page" />
+		 <if test="orderBy!=null">
+			 order by ${orderBy}
+		 </if>
+	</select>
+
+	<!-- 查询数量-->
+	<select id="selectCount" resultType="java.lang.Integer" >
+		 SELECT count(1) FROM push_rule <include refid="query_condition" />
+	</select>
+
+	<!-- 插入 （匹配有值的字段）-->
+	<insert id="insert" parameterType="com.herman.gameserver.entity.push.PushRule">
+		<selectKey keyProperty="id" resultType="Long" order="AFTER">
+			SELECT LAST_INSERT_ID()
+		</selectKey>
+		 INSERT INTO push_rule
+		 <trim prefix="(" suffix=")" suffixOverrides="," >
+			<if test="gameCode != null">
+				 game_code,
+			</if>
+			<if test="mobileType != null">
+				 mobile_type,
+			</if>
+			<if test="pushGameCode != null">
+				 push_game_code,
+			</if>
+			<if test="percent != null">
+				 percent,
+			</if>
+			<if test="gmtCreate != null">
+				 gmt_create,
+			</if>
+			<if test="gmtModified != null">
+				 gmt_modified,
+			</if>
+			<if test="isDeleted != null">
+				 is_deleted,
+			</if>
+		 </trim>
+		 <trim prefix="values (" suffix=")" suffixOverrides="," >
+			<if test="gameCode!=null">
+				 #{gameCode},
+			</if>
+			<if test="mobileType!=null">
+				 #{mobileType},
+			</if>
+			<if test="pushGameCode!=null">
+				 #{pushGameCode},
+			</if>
+			<if test="percent!=null">
+				 #{percent},
+			</if>
+			<if test="gmtCreate!=null">
+				 #{gmtCreate},
+			</if>
+			<if test="gmtModified!=null">
+				 #{gmtModified},
+			</if>
+			<if test="isDeleted!=null">
+				 #{isDeleted},
+			</if>
+		 </trim>
+	</insert>
+
+	<!-- 插入或者更新 （匹配有值的字段）-->
+	<insert id="insertOrUpdate" parameterType="com.herman.gameserver.entity.push.PushRule">
+		 INSERT INTO push_rule
+		 <trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="id != null">
+				 id,
+			</if>
+			<if test="gameCode != null">
+				 game_code,
+			</if>
+			<if test="mobileType != null">
+				 mobile_type,
+			</if>
+			<if test="pushGameCode != null">
+				 push_game_code,
+			</if>
+			<if test="percent != null">
+				 percent,
+			</if>
+			<if test="gmtCreate != null">
+				 gmt_create,
+			</if>
+			<if test="gmtModified != null">
+				 gmt_modified,
+			</if>
+			<if test="isDeleted != null">
+				 is_deleted,
+			</if>
+		 </trim>
+		 <trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="id!=null">
+				 #{id},
+			</if>
+			<if test="gameCode!=null">
+				 #{gameCode},
+			</if>
+			<if test="mobileType!=null">
+				 #{mobileType},
+			</if>
+			<if test="pushGameCode!=null">
+				 #{pushGameCode},
+			</if>
+			<if test="percent!=null">
+				 #{percent},
+			</if>
+			<if test="gmtCreate!=null">
+				 #{gmtCreate},
+			</if>
+			<if test="gmtModified!=null">
+				 #{gmtModified},
+			</if>
+			<if test="isDeleted!=null">
+				 #{isDeleted},
+			</if>
+		 </trim>
+		 on DUPLICATE key
+		 <trim prefix="" suffix="" suffixOverrides=",">
+			<if test="gameCode!=null">
+				 game_code = VALUES(game_code),
+			</if>
+			<if test="mobileType!=null">
+				 mobile_type = VALUES(mobile_type),
+			</if>
+			<if test="pushGameCode!=null">
+				 push_game_code = VALUES(push_game_code),
+			</if>
+			<if test="percent!=null">
+				 percent = VALUES(percent),
+			</if>
+			<if test="gmtCreate!=null">
+				 gmt_create = VALUES(gmt_create),
+			</if>
+			<if test="gmtModified!=null">
+				 gmt_modified = VALUES(gmt_modified),
+			</if>
+			<if test="isDeleted!=null">
+				 is_deleted = VALUES(is_deleted),
+			</if>
+		 </trim>
+	</insert>
+
+	<!-- 添加 （批量插入）-->
+	<insert id="insertBatch" parameterType="com.herman.gameserver.entity.push.PushRule">
+		 INSERT INTO push_rule(game_code,mobile_type,push_game_code,percent,gmt_create,gmt_modified,is_deleted)values
+		<foreach collection="list" item="item" separator=",">
+		 (
+		 #{item.gameCode},#{item.mobileType},#{item.pushGameCode},#{item.percent},#{item.gmtCreate},#{item.gmtModified},#{item.isDeleted}
+			 )
+		</foreach>
+	</insert>
+
+	<!-- 根据Id修改-->
+	<update id="updateById" parameterType="com.herman.gameserver.entity.push.PushRule">
+		 UPDATE push_rule
+ 		 <set> 
+			<if test="bean.gameCode != null">
+				 game_code = #{bean.gameCode},
+			</if>
+			<if test="bean.mobileType != null">
+				 mobile_type = #{bean.mobileType},
+			</if>
+			<if test="bean.pushGameCode != null">
+				 push_game_code = #{bean.pushGameCode},
+			</if>
+			<if test="bean.percent != null">
+				 percent = #{bean.percent},
+			</if>
+			<if test="bean.gmtCreate != null">
+				 gmt_create = #{bean.gmtCreate},
+			</if>
+			<if test="bean.gmtModified != null">
+				 gmt_modified = #{bean.gmtModified},
+			</if>
+			<if test="bean.isDeleted != null">
+				 is_deleted = #{bean.isDeleted},
+			</if>
+ 		 </set>
+ 		 where id=#{id}
+	</update>
+
+	<!-- 根据Id删除-->
+	<delete id="deleteById">
+		delete from push_rule where id=#{id}
+	</delete>
+
+	<!-- 根据PrimaryKey获取对象-->
+	<select id="selectById" resultMap="base_result_map" >
+		select <include refid="base_column_list" /> from push_rule where id=#{id}
+	</select>
+    
+    <!-- 根据gameCode获取对象-->
+    <select id="selectByGameCode" resultMap="base_result_map" >
+        select <include refid="base_column_list" />
+        from push_rule where game_code=#{gameCode} and mobile_type=#{mobileType}
+    </select>
+
+</mapper>

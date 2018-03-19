@@ -1,0 +1,499 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.herman.gameserver.dao.push.PushRecordDAO">
+
+	<!--实体映射-->
+	<resultMap id="base_result_map" type="com.herman.gameserver.entity.push.PushRecord">
+		<!--物理ID-->
+		<id column="id" property="id"  />
+		<!--用户ID-->
+		<result column="dg_udid" property="dgUdid"  />
+		<!--游戏ID-->
+		<result column="game_id" property="gameId"  />
+		<!--推送的游戏ID-->
+		<result column="push_game_id" property="pushGameId"  />
+		<!--推送游戏的版本号-->
+		<result column="push_version" property="pushVersion"  />
+		<!--状态（0：未激活，1：已激活，2：已领取奖励）-->
+		<result column="status" property="status"  />
+		<!--跳转次数-->
+		<result column="jump_times" property="jumpTimes"  />
+		<!--跳转时间-->
+		<result column="last_jump_time" property="lastJumpTime"  />
+		<!--激活时间-->
+		<result column="activeTime" property="activetime"  />
+		<!--创建时间-->
+		<result column="gmt_create" property="gmtCreate"  />
+		<!--更新时间-->
+		<result column="gmt_modified" property="gmtModified"  />
+		<!--是否删除（0：否，1：是）-->
+		<result column="is_deleted" property="isDeleted"  />
+	</resultMap>
+
+
+	<!-- 通用查询结果列-->
+	<sql id="base_column_list">
+		 id,dg_udid,game_id,push_game_id,push_version,status,jump_times,last_jump_time,activeTime,gmt_create,gmt_modified,is_deleted
+	</sql>
+
+	<sql id="base_condition_filed">
+			<if test="id != null">
+				 and  id = #{id}
+			</if>
+			<if test="dgUdid != null and dgUdid!=''">
+				 and  dg_udid = #{dgUdid}
+			</if>
+			<if test="gameId != null">
+				 and  game_id = #{gameId}
+			</if>
+			<if test="pushGameId != null">
+				 and  push_game_id = #{pushGameId}
+			</if>
+			<if test="pushVersion != null and pushVersion!=''">
+				 and  push_version = #{pushVersion}
+			</if>
+			<if test="status != null">
+				 and  status = #{status}
+			</if>
+			<if test="jumpTimes != null">
+				 and  jump_times = #{jumpTimes}
+			</if>
+			<if test="lastJumpTime != null">
+				 and  last_jump_time = #{lastJumpTime}
+			</if>
+			<if test="activetime != null">
+				 and  activeTime = #{activetime}
+			</if>
+			<if test="gmtCreate != null">
+				 and  gmt_create = #{gmtCreate}
+			</if>
+			<if test="gmtModified != null">
+				 and  gmt_modified = #{gmtModified}
+			</if>
+			<if test="isDeleted != null">
+				 and  is_deleted = #{isDeleted}
+			</if>
+	</sql>
+	<!-- 通用条件列-->
+	<sql id="base_condition">
+	 <where> <include refid="base_condition_filed" />	 </where>
+	</sql>
+
+	<!-- 通用查询条件列-->
+	<sql id="query_condition">
+	 <where>
+			<if test="dgUdid!= null  and dgUdid!=''">
+				 and  dg_udid like concat('%', #{dgUdid}, '%')
+			</if>
+			<if test="pushVersion!= null  and pushVersion!=''">
+				 and  push_version like concat('%', #{pushVersion}, '%')
+			</if>
+			<if test="lastJumpTime != null and lastJumpTime !=''">
+				 <![CDATA[ and  last_jump_time = str_to_date('${lastJumpTime}', '%Y-%m-%d') ]]>
+			</if>
+
+			<if test="activetime != null and activetime !=''">
+				 <![CDATA[ and  activeTime = str_to_date('${activetime}', '%Y-%m-%d') ]]>
+			</if>
+
+			<if test="gmtCreate != null and gmtCreate !=''">
+				 <![CDATA[ and  gmt_create = str_to_date('${gmtCreate}', '%Y-%m-%d') ]]>
+			</if>
+
+			<if test="gmtModified != null and gmtModified !=''">
+				 <![CDATA[ and  gmt_modified = str_to_date('${gmtModified}', '%Y-%m-%d') ]]>
+			</if>
+
+	 </where>
+	</sql>
+
+	<!-- 通用查询条件列，用于分页-->
+	<sql id="query_condition_page">
+	 <where>
+			<if test="entity.dgUdid!= null  and entity.dgUdid!=''">
+				 and  dg_udid like concat('%', #{entity.dgUdid}, '%')
+			</if>
+			<if test="entity.pushVersion!= null  and entity.pushVersion!=''">
+				 and  push_version like concat('%', #{entity.pushVersion}, '%')
+			</if>
+			<if test="entity.lastJumpTime != null and entity.lastJumpTime !=''">
+				 <![CDATA[ and  last_jump_time = str_to_date('${entity.lastJumpTime}', '%Y-%m-%d') ]]>
+			</if>
+
+			<if test="entity.activetime != null and entity.activetime !=''">
+				 <![CDATA[ and  activeTime = str_to_date('${entity.activetime}', '%Y-%m-%d') ]]>
+			</if>
+
+			<if test="entity.gmtCreate != null and entity.gmtCreate !=''">
+				 <![CDATA[ and  gmt_create = str_to_date('${entity.gmtCreate}', '%Y-%m-%d') ]]>
+			</if>
+
+			<if test="entity.gmtModified != null and entity.gmtModified !=''">
+				 <![CDATA[ and  gmt_modified = str_to_date('${entity.gmtModified}', '%Y-%m-%d') ]]>
+			</if>
+
+	 </where>
+	</sql>
+
+	<!-- 查询集合-->
+	<select id="selectList" resultMap="base_result_map" >
+		 SELECT <include refid="base_column_list" /> FROM push_record <include refid="query_condition" />
+		 <if test="orderBy!=null">
+			 order by ${orderBy}
+		 </if>
+	</select>
+
+	<!-- 分页查询集合-->
+	<select id="selectListPage" resultMap="base_result_map" >
+		 SELECT <include refid="base_column_list" /> FROM push_record <include refid="query_condition_page" />
+		 <if test="orderBy!=null">
+			 order by ${orderBy}
+		 </if>
+	</select>
+
+	<!-- 查询数量-->
+	<select id="selectCount" resultType="java.lang.Integer" >
+		 SELECT count(1) FROM push_record <include refid="query_condition" />
+	</select>
+
+	<!-- 插入 （匹配有值的字段）-->
+	<insert id="insert" parameterType="com.herman.gameserver.entity.push.PushRecord">
+		<selectKey keyProperty="id" resultType="Long" order="AFTER">
+			SELECT LAST_INSERT_ID()
+		</selectKey>
+		 INSERT INTO push_record
+		 <trim prefix="(" suffix=")" suffixOverrides="," >
+			<if test="dgUdid != null">
+				 dg_udid,
+			</if>
+			<if test="gameId != null">
+				 game_id,
+			</if>
+			<if test="pushGameId != null">
+				 push_game_id,
+			</if>
+			<if test="pushVersion != null">
+				 push_version,
+			</if>
+			<if test="status != null">
+				 status,
+			</if>
+			<if test="jumpTimes != null">
+				 jump_times,
+			</if>
+			<if test="lastJumpTime != null">
+				 last_jump_time,
+			</if>
+			<if test="activetime != null">
+				 activeTime,
+			</if>
+			<if test="gmtCreate != null">
+				 gmt_create,
+			</if>
+			<if test="gmtModified != null">
+				 gmt_modified,
+			</if>
+			<if test="isDeleted != null">
+				 is_deleted,
+			</if>
+		 </trim>
+		 <trim prefix="values (" suffix=")" suffixOverrides="," >
+			<if test="dgUdid!=null">
+				 #{dgUdid},
+			</if>
+			<if test="gameId!=null">
+				 #{gameId},
+			</if>
+			<if test="pushGameId!=null">
+				 #{pushGameId},
+			</if>
+			<if test="pushVersion!=null">
+				 #{pushVersion},
+			</if>
+			<if test="status!=null">
+				 #{status},
+			</if>
+			<if test="jumpTimes!=null">
+				 #{jumpTimes},
+			</if>
+			<if test="lastJumpTime!=null">
+				 #{lastJumpTime},
+			</if>
+			<if test="activetime!=null">
+				 #{activetime},
+			</if>
+			<if test="gmtCreate!=null">
+				 #{gmtCreate},
+			</if>
+			<if test="gmtModified!=null">
+				 #{gmtModified},
+			</if>
+			<if test="isDeleted!=null">
+				 #{isDeleted},
+			</if>
+		 </trim>
+	</insert>
+
+	<!-- 插入或者更新 （匹配有值的字段）-->
+	<insert id="insertOrUpdate" parameterType="com.herman.gameserver.entity.push.PushRecord">
+		 INSERT INTO push_record
+		 <trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="id != null">
+				 id,
+			</if>
+			<if test="dgUdid != null">
+				 dg_udid,
+			</if>
+			<if test="gameId != null">
+				 game_id,
+			</if>
+			<if test="pushGameId != null">
+				 push_game_id,
+			</if>
+			<if test="pushVersion != null">
+				 push_version,
+			</if>
+			<if test="status != null">
+				 status,
+			</if>
+			<if test="jumpTimes != null">
+				 jump_times,
+			</if>
+			<if test="lastJumpTime != null">
+				 last_jump_time,
+			</if>
+			<if test="activetime != null">
+				 activeTime,
+			</if>
+			<if test="gmtCreate != null">
+				 gmt_create,
+			</if>
+			<if test="gmtModified != null">
+				 gmt_modified,
+			</if>
+			<if test="isDeleted != null">
+				 is_deleted,
+			</if>
+		 </trim>
+		 <trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="id!=null">
+				 #{id},
+			</if>
+			<if test="dgUdid!=null">
+				 #{dgUdid},
+			</if>
+			<if test="gameId!=null">
+				 #{gameId},
+			</if>
+			<if test="pushGameId!=null">
+				 #{pushGameId},
+			</if>
+			<if test="pushVersion!=null">
+				 #{pushVersion},
+			</if>
+			<if test="status!=null">
+				 #{status},
+			</if>
+			<if test="jumpTimes!=null">
+				 #{jumpTimes},
+			</if>
+			<if test="lastJumpTime!=null">
+				 #{lastJumpTime},
+			</if>
+			<if test="activetime!=null">
+				 #{activetime},
+			</if>
+			<if test="gmtCreate!=null">
+				 #{gmtCreate},
+			</if>
+			<if test="gmtModified!=null">
+				 #{gmtModified},
+			</if>
+			<if test="isDeleted!=null">
+				 #{isDeleted},
+			</if>
+		 </trim>
+		 on DUPLICATE key
+		 <trim prefix="" suffix="" suffixOverrides=",">
+			<if test="dgUdid!=null">
+				 dg_udid = VALUES(dg_udid),
+			</if>
+			<if test="gameId!=null">
+				 game_id = VALUES(game_id),
+			</if>
+			<if test="pushGameId!=null">
+				 push_game_id = VALUES(push_game_id),
+			</if>
+			<if test="pushVersion!=null">
+				 push_version = VALUES(push_version),
+			</if>
+			<if test="status!=null">
+				 status = VALUES(status),
+			</if>
+			<if test="jumpTimes!=null">
+				 jump_times = VALUES(jump_times),
+			</if>
+			<if test="lastJumpTime!=null">
+				 last_jump_time = VALUES(last_jump_time),
+			</if>
+			<if test="activetime!=null">
+				 activeTime = VALUES(activeTime),
+			</if>
+			<if test="gmtCreate!=null">
+				 gmt_create = VALUES(gmt_create),
+			</if>
+			<if test="gmtModified!=null">
+				 gmt_modified = VALUES(gmt_modified),
+			</if>
+			<if test="isDeleted!=null">
+				 is_deleted = VALUES(is_deleted),
+			</if>
+		 </trim>
+	</insert>
+
+	<!-- 添加 （批量插入）-->
+	<insert id="insertBatch" parameterType="com.herman.gameserver.entity.push.PushRecord">
+		 INSERT INTO push_record(dg_udid,game_id,push_game_id,push_version,status,jump_times,last_jump_time,activeTime,gmt_create,gmt_modified,is_deleted)values
+		<foreach collection="list" item="item" separator=",">
+		 (
+		 #{item.dgUdid},#{item.gameId},#{item.pushGameId},#{item.pushVersion},#{item.status},#{item.jumpTimes},#{item.lastJumpTime},#{item.activetime},#{item.gmtCreate},#{item.gmtModified},#{item.isDeleted}
+			 )
+		</foreach>
+	</insert>
+
+	<!-- 根据IdAndGameId修改-->
+	<update id="updateByIdAndGameId" parameterType="com.herman.gameserver.entity.push.PushRecord">
+		 UPDATE push_record
+ 		 <set> 
+			<if test="bean.dgUdid != null">
+				 dg_udid = #{bean.dgUdid},
+			</if>
+			<if test="bean.pushGameId != null">
+				 push_game_id = #{bean.pushGameId},
+			</if>
+			<if test="bean.pushVersion != null">
+				 push_version = #{bean.pushVersion},
+			</if>
+			<if test="bean.status != null">
+				 status = #{bean.status},
+			</if>
+			<if test="bean.jumpTimes != null">
+				 jump_times = #{bean.jumpTimes},
+			</if>
+			<if test="bean.lastJumpTime != null">
+				 last_jump_time = #{bean.lastJumpTime},
+			</if>
+			<if test="bean.activetime != null">
+				 activeTime = #{bean.activetime},
+			</if>
+			<if test="bean.gmtCreate != null">
+				 gmt_create = #{bean.gmtCreate},
+			</if>
+			<if test="bean.gmtModified != null">
+				 gmt_modified = #{bean.gmtModified},
+			</if>
+			<if test="bean.isDeleted != null">
+				 is_deleted = #{bean.isDeleted},
+			</if>
+ 		 </set>
+ 		 where id=#{id} and game_id=#{gameId}
+	</update>
+
+	<!-- 根据pushIdAndGameId修改-->
+	<update id="updateByPushIdAndGameId" parameterType="com.herman.gameserver.entity.push.PushRecord">
+		UPDATE push_record
+		<set>
+			<if test="bean.dgUdid != null">
+				dg_udid = #{bean.dgUdid},
+			</if>
+			<if test="bean.pushGameId != null">
+				push_game_id = #{bean.pushGameId},
+			</if>
+			<if test="bean.pushVersion != null">
+				push_version = #{bean.pushVersion},
+			</if>
+			<if test="bean.status != null">
+				status = #{bean.status},
+			</if>
+			<if test="bean.jumpTimes != null">
+				jump_times = #{bean.jumpTimes},
+			</if>
+			<if test="bean.lastJumpTime != null">
+				last_jump_time = #{bean.lastJumpTime},
+			</if>
+			<if test="bean.activetime != null">
+				activeTime = #{bean.activetime},
+			</if>
+			<if test="bean.gmtCreate != null">
+				gmt_create = #{bean.gmtCreate},
+			</if>
+			<if test="bean.gmtModified != null">
+				gmt_modified = #{bean.gmtModified},
+			</if>
+			<if test="bean.isDeleted != null">
+				is_deleted = #{bean.isDeleted},
+			</if>
+		</set>
+		where push_game_id=#{pushGameId} and dg_udid=#{dgUdid} and push_version=#{pushVersion}
+	</update>
+
+	<!-- 根据pushIdAndDgudid修改-->
+	<update id="updateByPushIdAndDgudid" parameterType="com.herman.gameserver.entity.push.PushRecord">
+		UPDATE push_record
+		<set>
+			<if test="bean.dgUdid != null">
+				dg_udid = #{bean.dgUdid},
+			</if>
+			<if test="bean.pushGameId != null">
+				push_game_id = #{bean.pushGameId},
+			</if>
+			<if test="bean.pushVersion != null">
+				push_version = #{bean.pushVersion},
+			</if>
+			<if test="bean.status != null">
+				status = #{bean.status},
+			</if>
+			<if test="bean.jumpTimes != null">
+				jump_times = #{bean.jumpTimes},
+			</if>
+			<if test="bean.lastJumpTime != null">
+				last_jump_time = #{bean.lastJumpTime},
+			</if>
+			<if test="bean.activetime != null">
+				activeTime = #{bean.activetime},
+			</if>
+			<if test="bean.gmtCreate != null">
+				gmt_create = #{bean.gmtCreate},
+			</if>
+			<if test="bean.gmtModified != null">
+				gmt_modified = #{bean.gmtModified},
+			</if>
+			<if test="bean.isDeleted != null">
+				is_deleted = #{bean.isDeleted},
+			</if>
+		</set>
+		where push_game_id=#{pushGameId} and game_id=#{gameId} and dg_udid=#{dgUdid} and push_version=#{pushVersion}
+	</update>
+
+	<!-- 根据IdAndGameId删除-->
+	<delete id="deleteByIdAndGameId">
+		delete from push_record where id=#{id} and game_id=#{gameId}
+	</delete>
+
+	<!-- 根据PrimaryKey获取对象-->
+	<select id="selectByIdAndGameId" resultMap="base_result_map" >
+		select <include refid="base_column_list" /> from push_record where id=#{id} and game_id=#{gameId}
+	</select>
+
+	<!-- 根据PrimaryKey获取对象-->
+	<select id="selectByPushIdAndGameId" resultMap="base_result_map" >
+		select <include refid="base_column_list" /> from push_record where push_game_id=#{pushGameId} and game_id=#{gameId} and dg_udid=#{dgUdid} and push_version=#{pushVersion}
+	</select>
+
+	<!-- 根据PrimaryKey获取对象-->
+	<select id="selectByPushIdAndDgudid" resultMap="base_result_map" >
+		select <include refid="base_column_list" /> from push_record where push_game_id=#{pushGameId} and dg_udid=#{dgUdid} and push_version=#{pushVersion}
+	</select>
+
+</mapper>

@@ -8,10 +8,6 @@ import com.herman.common.bean.CommonEntity;
 public class Member extends CommonEntity {
 
     private static final long serialVersionUID = 5352659943349719516L;
-    /**
-     * 主键
-     */
-    private Long id;
 
     /**
      * 游戏id
@@ -52,14 +48,6 @@ public class Member extends CommonEntity {
      * 用户头像
      */
     private String head;
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public Long getId() {
-        return this.id;
-    }
 
     public void setGameId(Long gameId) {
         this.gameId = gameId;
@@ -128,8 +116,7 @@ public class Member extends CommonEntity {
     @Override
     public String toString() {
         return "Member{" +
-                "id=" + id +
-                ", gameId=" + gameId +
+                "gameId=" + gameId +
                 ", dgAccount='" + dgAccount + '\'' +
                 ", dgUdid='" + dgUdid + '\'' +
                 ", platformType='" + platformType + '\'' +

@@ -1,15 +1,40 @@
 package com.herman.gameserver.common.controller;
 
+import com.herman.common.bean.ResponseBean;
+import com.herman.gameserver.common.constant.ErrorMsg;
+
 /**
  * 公共controller
  * Created by herman on 2018/1/2.
  */
 public class BaseController {
 
-    public static final int CON_SUCCESS_CODE = 0;
-    public static final int CON_ERROR_CODE = 1;
-    public static final int CON_EXCEPTION_CODE = 2;
+    /**
+     * 获取失败的错误对象
+     * @param code
+     * @return
+     */
+    public ResponseBean getErrResponseBean(String code) {
+        return new ResponseBean(code, ErrorMsg.getMsg(code));
+    }
 
-    public static final String CON_SUCCESS_MSG = "成功";
-    public static final String CON_ERROR_MSG = "系统错误";
+
+//    @PostConstruct
+//    public void init() {
+//        // 设置DES加密密钥
+//        DesUtil.KEY = "duogu123";
+//    }
+//    /**
+//     * 将json字符串解密后，转为对象
+//     * @param str
+//     * @param beanClass
+//     * @return
+//     */
+//    public Object getDecryptObject(String str, Class beanClass) {
+//        String jsonStr = DesUtil.decrypt(str);
+//        JSONObject jo = JSONObject.fromObject(jsonStr);
+//        return JSONObject.toBean(jo, beanClass);
+//    }
+
+
 }

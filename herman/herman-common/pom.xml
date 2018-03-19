@@ -4,8 +4,8 @@
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
 
     <modelVersion>4.0.0</modelVersion>
-    <groupId>com.herman.common</groupId>
-    <artifactId>herman-common</artifactId>
+    <groupId>com.herman.common124</groupId>
+    <artifactId>herman-common124</artifactId>
     <packaging>jar</packaging>
     <version>1.0.0</version>
     <name>herman-common</name>

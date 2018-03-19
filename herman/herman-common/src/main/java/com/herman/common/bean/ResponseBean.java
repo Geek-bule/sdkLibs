@@ -1,7 +1,6 @@
 package com.herman.common.bean;
 
 import org.codehaus.jackson.map.annotate.JsonSerialize;
-
 import java.io.Serializable;
 
 /**
@@ -10,12 +9,10 @@ import java.io.Serializable;
  */
 @JsonSerialize(include= JsonSerialize.Inclusion.NON_NULL)
 public class ResponseBean<T> implements Serializable {
-    public static final int SUCCESS_CODE = 0;
-    public static final String SUCCESS_MSG = "成功";
-    public static final int FAIL_CODE = 0;
-    public static final String FAIL_MSG = "失败";
-    public static final String SERVER_ERROR_MSG = "系统错误";
-    private int code = SUCCESS_CODE;
+    private static final long serialVersionUID = 1296061247555319545L;
+    public static final String SUCCESS_CODE = "0";
+    public static final String SUCCESS_MSG = "操作成功";
+    private String code = SUCCESS_CODE;
     private String msg = SUCCESS_MSG;
     private T content;
 
@@ -26,32 +23,22 @@ public class ResponseBean<T> implements Serializable {
         this.content = content;
     }
 
-    public ResponseBean(int code, String msg) {
+    public ResponseBean(String code, String msg) {
         this.code = code;
         this.msg = msg;
     }
 
-    public ResponseBean(int code, String msg, T content) {
+    public ResponseBean(String code, String msg, T content) {
         this.code = code;
         this.msg = msg;
         this.content = content;
     }
 
-    public void fail() {
-        this.code = FAIL_CODE;
-        this.msg = FAIL_MSG;
-    }
-
-    public void serverError() {
-        this.code = FAIL_CODE;
-        this.msg = SERVER_ERROR_MSG;
-    }
-
-    public int getCode() {
+    public String getCode() {
         return code;
     }
 
-    public void setCode(int code) {
+    public void setCode(String code) {
         this.code = code;
     }
 
@@ -69,5 +56,14 @@ public class ResponseBean<T> implements Serializable {
 
     public void setContent(T content) {
         this.content = content;
+    }
+
+    @Override
+    public String toString() {
+        return "ResponseBean{" +
+                "code=" + code +
+                ", msg='" + msg + '\'' +
+                ", content=" + content +
+                '}';
     }
 }

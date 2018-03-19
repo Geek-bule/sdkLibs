@@ -10,11 +10,6 @@ public class Game extends CommonEntity {
 
     private static final long serialVersionUID = -178090212219953550L;
     /**
-     * 主键
-     */
-    private Long id;
-
-    /**
      * 游戏代码
      */
     private String code;
@@ -24,13 +19,25 @@ public class Game extends CommonEntity {
      */
     private String name;
 
-    public void setId(Long id) {
-        this.id = id;
-    }
+    /**
+     * 游戏平台
+     */
+    private String mobile_type;
 
-    public Long getId() {
-        return this.id;
-    }
+    /**
+     * 平台id
+     */
+    private String platform_id;
+
+    /**
+     * 平台url
+     */
+    private String platform_url;
+
+    /**
+     * 游戏版本号
+     */
+    private String platform_version;
 
     public void setCode(String code) {
         this.code = code;
@@ -48,12 +55,46 @@ public class Game extends CommonEntity {
         return this.name;
     }
 
+    public void setMobileType(String mobileType) {
+        this.mobile_type = mobileType;
+    }
+
+    public String getMobileType() {
+        return this.mobile_type;
+    }
+
+    public void setPlatformId(String platformId) {
+        this.platform_id = platformId;
+    }
+
+    public String getPlatformId() { return this.platform_id; }
+
+    public void setPlatformUrl(String platformUrl) {
+        this.platform_url = platformUrl;
+    }
+
+    public String getPlatformUrl() {
+        return this.platform_url;
+    }
+
+    public void setPlatformVersion(String platformVersion) {
+        this.platform_version = platformVersion;
+    }
+
+    public String getPlatformVersion() {
+        return this.platform_version;
+    }
+
     @Override
     public String toString() {
         return "Game{" +
-                "id=" + id +
-                ", code='" + code + '\'' +
+                "code='" + code + '\'' +
                 ", name='" + name + '\'' +
+                ", mobile_type='" + mobile_type + '\'' +
+                ", platform_id='" + platform_id + '\'' +
+                ", platform_url='" + platform_url + '\'' +
+                ", platform_version='" + platform_version + '\'' +
                 "} " + super.toString();
     }
+
 }

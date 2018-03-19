@@ -232,10 +232,16 @@
             <version>5.2.4.Final</version>
         </dependency>
 
+        <dependency>
+            <groupId>org.apache.geronimo.bundles</groupId>
+            <artifactId>aspectjweaver</artifactId>
+            <version>1.6.8_2</version>
+        </dependency>
+
         <!-- herman begin -->
         <dependency>
-            <groupId>com.herman.common</groupId>
-            <artifactId>herman-common</artifactId>
+            <groupId>com.herman.common124</groupId>
+            <artifactId>herman-common124</artifactId>
             <version>1.0.0</version>
         </dependency>
         <!-- herman end -->

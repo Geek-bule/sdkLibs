@@ -1,0 +1,376 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.herman.gameserver.dao.push.PushStatisticsDAO">
+
+	<!--实体映射-->
+	<resultMap id="base_result_map" type="com.herman.gameserver.entity.push.PushStatistics">
+		<!---->
+		<id column="id" property="id"  />
+		<!--游戏ID-->
+		<result column="game_id" property="gameId"  />
+		<!--推送的游戏ID-->
+		<result column="push_game_id" property="pushGameId"  />
+		<!--icon展示数-->
+		<result column="icon_show" property="iconShow"  />
+		<!--icon点击数-->
+		<result column="icon_click" property="iconClick"  />
+		<!--icon激活数-->
+		<result column="icon_active" property="iconActive"  />
+		<!--统计日期-->
+		<result column="statistics_date" property="statisticsDate"  />
+		<!--创建时间-->
+		<result column="gmt_create" property="gmtCreate"  />
+		<!--更新时间-->
+		<result column="gmt_modified" property="gmtModified"  />
+		<!--是否删除（0：否，1：是）-->
+		<result column="is_deleted" property="isDeleted"  />
+	</resultMap>
+
+
+	<!-- 通用查询结果列-->
+	<sql id="base_column_list">
+		 id,game_id,push_game_id,icon_show,icon_click,icon_active,statistics_date,gmt_create,gmt_modified,is_deleted
+	</sql>
+
+	<sql id="base_condition_filed">
+			<if test="id != null">
+				 and  id = #{id}
+			</if>
+			<if test="gameId != null">
+				 and  game_id = #{gameId}
+			</if>
+			<if test="pushGameId != null">
+				 and  push_game_id = #{pushGameId}
+			</if>
+			<if test="iconShow != null">
+				 and  icon_show = #{iconShow}
+			</if>
+			<if test="iconClick != null">
+				 and  icon_click = #{iconClick}
+			</if>
+			<if test="iconActive != null">
+				 and  icon_active = #{iconActive}
+			</if>
+			<if test="statisticsDate != null">
+				 and  statistics_date = #{statisticsDate}
+			</if>
+			<if test="gmtCreate != null">
+				 and  gmt_create = #{gmtCreate}
+			</if>
+			<if test="gmtModified != null">
+				 and  gmt_modified = #{gmtModified}
+			</if>
+			<if test="isDeleted != null">
+				 and  is_deleted = #{isDeleted}
+			</if>
+	</sql>
+	<!-- 通用条件列-->
+	<sql id="base_condition">
+	 <where> <include refid="base_condition_filed" />	 </where>
+	</sql>
+
+	<!-- 通用查询条件列-->
+	<sql id="query_condition">
+	 <where>
+			<if test="gmtCreate != null and gmtCreate !=''">
+				 <![CDATA[ and  gmt_create = str_to_date('${gmtCreate}', '%Y-%m-%d') ]]>
+			</if>
+
+			<if test="gmtModified != null and gmtModified !=''">
+				 <![CDATA[ and  gmt_modified = str_to_date('${gmtModified}', '%Y-%m-%d') ]]>
+			</if>
+
+	 </where>
+	</sql>
+
+	<!-- 通用查询条件列，用于分页-->
+	<sql id="query_condition_page">
+	 <where>
+			<if test="entity.gmtCreate != null and entity.gmtCreate !=''">
+				 <![CDATA[ and  gmt_create = str_to_date('${entity.gmtCreate}', '%Y-%m-%d') ]]>
+			</if>
+
+			<if test="entity.gmtModified != null and entity.gmtModified !=''">
+				 <![CDATA[ and  gmt_modified = str_to_date('${entity.gmtModified}', '%Y-%m-%d') ]]>
+			</if>
+
+	 </where>
+	</sql>
+
+	<!-- 查询集合-->
+	<select id="selectList" resultMap="base_result_map" >
+		 SELECT <include refid="base_column_list" /> FROM push_statistics <include refid="query_condition" />
+		 <if test="orderBy!=null">
+			 order by ${orderBy}
+		 </if>
+	</select>
+
+	<!-- 分页查询集合-->
+	<select id="selectListPage" resultMap="base_result_map" >
+		 SELECT <include refid="base_column_list" /> FROM push_statistics <include refid="query_condition_page" />
+		 <if test="orderBy!=null">
+			 order by ${orderBy}
+		 </if>
+	</select>
+
+	<!-- 查询数量-->
+	<select id="selectCount" resultType="java.lang.Integer" >
+		 SELECT count(1) FROM push_statistics <include refid="query_condition" />
+	</select>
+
+	<!-- 插入 （匹配有值的字段）-->
+	<insert id="insert" parameterType="com.herman.gameserver.entity.push.PushStatistics">
+		<selectKey keyProperty="id" resultType="Long" order="AFTER">
+			SELECT LAST_INSERT_ID()
+		</selectKey>
+		 INSERT INTO push_statistics
+		 <trim prefix="(" suffix=")" suffixOverrides="," >
+			<if test="gameId != null">
+				 game_id,
+			</if>
+			<if test="pushGameId != null">
+				 push_game_id,
+			</if>
+			<if test="iconShow != null">
+				 icon_show,
+			</if>
+			<if test="iconClick != null">
+				 icon_click,
+			</if>
+			<if test="iconActive != null">
+				 icon_active,
+			</if>
+			<if test="statisticsDate != null">
+				 statistics_date,
+			</if>
+			<if test="gmtCreate != null">
+				 gmt_create,
+			</if>
+			<if test="gmtModified != null">
+				 gmt_modified,
+			</if>
+			<if test="isDeleted != null">
+				 is_deleted,
+			</if>
+		 </trim>
+		 <trim prefix="values (" suffix=")" suffixOverrides="," >
+			<if test="gameId!=null">
+				 #{gameId},
+			</if>
+			<if test="pushGameId!=null">
+				 #{pushGameId},
+			</if>
+			<if test="iconShow!=null">
+				 #{iconShow},
+			</if>
+			<if test="iconClick!=null">
+				 #{iconClick},
+			</if>
+			<if test="iconActive!=null">
+				 #{iconActive},
+			</if>
+			<if test="statisticsDate!=null">
+				 #{statisticsDate},
+			</if>
+			<if test="gmtCreate!=null">
+				 #{gmtCreate},
+			</if>
+			<if test="gmtModified!=null">
+				 #{gmtModified},
+			</if>
+			<if test="isDeleted!=null">
+				 #{isDeleted},
+			</if>
+		 </trim>
+	</insert>
+
+	<!-- 插入或者更新 （匹配有值的字段）-->
+	<insert id="insertOrUpdate" parameterType="com.herman.gameserver.entity.push.PushStatistics">
+		 INSERT INTO push_statistics
+		 <trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="id != null">
+				 id,
+			</if>
+			<if test="gameId != null">
+				 game_id,
+			</if>
+			<if test="pushGameId != null">
+				 push_game_id,
+			</if>
+			<if test="iconShow != null">
+				 icon_show,
+			</if>
+			<if test="iconClick != null">
+				 icon_click,
+			</if>
+			<if test="iconActive != null">
+				 icon_active,
+			</if>
+			<if test="statisticsDate != null">
+				 statistics_date,
+			</if>
+			<if test="gmtCreate != null">
+				 gmt_create,
+			</if>
+			<if test="gmtModified != null">
+				 gmt_modified,
+			</if>
+			<if test="isDeleted != null">
+				 is_deleted,
+			</if>
+		 </trim>
+		 <trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="id!=null">
+				 #{id},
+			</if>
+			<if test="gameId!=null">
+				 #{gameId},
+			</if>
+			<if test="pushGameId!=null">
+				 #{pushGameId},
+			</if>
+			<if test="iconShow!=null">
+				 #{iconShow},
+			</if>
+			<if test="iconClick!=null">
+				 #{iconClick},
+			</if>
+			<if test="iconActive!=null">
+				 #{iconActive},
+			</if>
+			<if test="statisticsDate!=null">
+				 #{statisticsDate},
+			</if>
+			<if test="gmtCreate!=null">
+				 #{gmtCreate},
+			</if>
+			<if test="gmtModified!=null">
+				 #{gmtModified},
+			</if>
+			<if test="isDeleted!=null">
+				 #{isDeleted},
+			</if>
+		 </trim>
+		 on DUPLICATE key
+		 <trim prefix="" suffix="" suffixOverrides=",">
+			<if test="gameId!=null">
+				 game_id = VALUES(game_id),
+			</if>
+			<if test="pushGameId!=null">
+				 push_game_id = VALUES(push_game_id),
+			</if>
+			<if test="iconShow!=null">
+				 icon_show = VALUES(icon_show),
+			</if>
+			<if test="iconClick!=null">
+				 icon_click = VALUES(icon_click),
+			</if>
+			<if test="iconActive!=null">
+				 icon_active = VALUES(icon_active),
+			</if>
+			<if test="statisticsDate!=null">
+				 statistics_date = VALUES(statistics_date),
+			</if>
+			<if test="gmtCreate!=null">
+				 gmt_create = VALUES(gmt_create),
+			</if>
+			<if test="gmtModified!=null">
+				 gmt_modified = VALUES(gmt_modified),
+			</if>
+			<if test="isDeleted!=null">
+				 is_deleted = VALUES(is_deleted),
+			</if>
+		 </trim>
+	</insert>
+
+	<!-- 添加 （批量插入）-->
+	<insert id="insertBatch" parameterType="com.herman.gameserver.entity.push.PushStatistics">
+		 INSERT INTO push_statistics(game_id,push_game_id,icon_show,icon_click,icon_active,statistics_date,gmt_create,gmt_modified,is_deleted)values
+		<foreach collection="list" item="item" separator=",">
+		 (
+		 #{item.gameId},#{item.pushGameId},#{item.iconShow},#{item.iconClick},#{item.iconActive},#{item.statisticsDate},#{item.gmtCreate},#{item.gmtModified},#{item.isDeleted}
+			 )
+		</foreach>
+	</insert>
+
+	<!-- 根据IdAndStatisticsDate修改-->
+	<update id="updateByIdAndStatisticsDate" parameterType="com.herman.gameserver.entity.push.PushStatistics">
+		 UPDATE push_statistics
+ 		 <set> 
+			<if test="bean.gameId != null">
+				 game_id = #{bean.gameId},
+			</if>
+			<if test="bean.pushGameId != null">
+				 push_game_id = #{bean.pushGameId},
+			</if>
+			<if test="bean.iconShow != null">
+				 icon_show = #{bean.iconShow},
+			</if>
+			<if test="bean.iconClick != null">
+				 icon_click = #{bean.iconClick},
+			</if>
+			<if test="bean.iconActive != null">
+				 icon_active = #{bean.iconActive},
+			</if>
+			<if test="bean.gmtCreate != null">
+				 gmt_create = #{bean.gmtCreate},
+			</if>
+			<if test="bean.gmtModified != null">
+				 gmt_modified = #{bean.gmtModified},
+			</if>
+			<if test="bean.isDeleted != null">
+				 is_deleted = #{bean.isDeleted},
+			</if>
+ 		 </set>
+ 		 where id=#{id} and statistics_date=#{statisticsDate}
+	</update>
+
+	<!-- 根据GameIdAndStatisticsDate修改-->
+	<update id="updateByGameIdAndStatisticsDate" parameterType="com.herman.gameserver.entity.push.PushStatistics">
+		UPDATE push_statistics
+		<set>
+			<if test="bean.gameId != null">
+				game_id = #{bean.gameId},
+			</if>
+			<if test="bean.pushGameId != null">
+				push_game_id = #{bean.pushGameId},
+			</if>
+			<if test="bean.iconShow != null">
+				icon_show = #{bean.iconShow},
+			</if>
+			<if test="bean.iconClick != null">
+				icon_click = #{bean.iconClick},
+			</if>
+			<if test="bean.iconActive != null">
+				icon_active = #{bean.iconActive},
+			</if>
+			<if test="bean.gmtCreate != null">
+				gmt_create = #{bean.gmtCreate},
+			</if>
+			<if test="bean.gmtModified != null">
+				gmt_modified = #{bean.gmtModified},
+			</if>
+			<if test="bean.isDeleted != null">
+				is_deleted = #{bean.isDeleted},
+			</if>
+		</set>
+		where game_id=#{gameId} and push_game_id=#{pushGameId} and statistics_date=#{statisticsDate}
+	</update>
+
+	<!-- 根据IdAndStatisticsDate删除-->
+	<delete id="deleteByIdAndStatisticsDate">
+		delete from push_statistics where id=#{id} and statistics_date=#{statisticsDate}
+	</delete>
+
+	<!-- 根据PrimaryKey获取对象-->
+	<select id="selectByIdAndStatisticsDate" resultMap="base_result_map" >
+		select <include refid="base_column_list" /> from push_statistics where id=#{id} and statistics_date=#{statisticsDate}
+	</select>
+
+	<!-- 根据PrimaryKey获取对象-->
+	<select id="selectByGameIdAndStatisticsDate" resultMap="base_result_map" >
+		select <include refid="base_column_list" /> from push_statistics where game_id=#{gameId} and push_game_id=#{pushGameId} and statistics_date=#{statisticsDate}
+	</select>
+
+</mapper>

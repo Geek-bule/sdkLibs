@@ -8,10 +8,6 @@ import com.herman.common.bean.CommonEntity;
 public class GameRecord extends CommonEntity {
 
     private static final long serialVersionUID = 8364980631933744226L;
-    /**
-     * 主键
-     */
-    private Long id;
 
     /**
      * 游戏id
@@ -27,14 +23,6 @@ public class GameRecord extends CommonEntity {
      * 游戏记录
      */
     private String record;
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public Long getId() {
-        return this.id;
-    }
 
     public void setGameId(Long gameId) {
         this.gameId = gameId;
@@ -63,8 +51,7 @@ public class GameRecord extends CommonEntity {
     @Override
     public String toString() {
         return "GameRecord{" +
-                "id=" + id +
-                ", gameId=" + gameId +
+                "gameId=" + gameId +
                 ", dgAccount='" + dgAccount + '\'' +
                 ", record='" + record + '\'' +
                 "} " + super.toString();

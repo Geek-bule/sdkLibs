@@ -15,4 +15,12 @@ public interface IGameRecordService {
      */
     public GameRecord getGameRecord(Long gameId, String dgAccount);
 
+    /**
+     * 保存游戏记录
+     *
+     * @param gameRecord
+     * @return
+     */
+    public int saveGameRecord(GameRecord gameRecord);
+
 }
