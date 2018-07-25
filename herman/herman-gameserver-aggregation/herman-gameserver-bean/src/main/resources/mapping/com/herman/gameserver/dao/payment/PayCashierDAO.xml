@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
     "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.duogu.server.dao.order.PayCashierDAO">
+<mapper namespace="com.herman.gameserver.dao.payment.PayCashierDAO">
 
 	<!--实体映射-->
-	<resultMap id="base_result_map" type="com.duogu.server.entity.order.PayCashier">
+	<resultMap id="base_result_map" type="com.herman.gameserver.entity.payment.PayCashier">
 		<!--主键-->
 		<id column="id" property="id"  />
 		<!--用户代码-->
@@ -229,7 +229,7 @@
 	</select>
 
 	<!-- 插入 （匹配有值的字段）-->
-	<insert id="insert" parameterType="com.duogu.server.entity.order.PayCashier">
+	<insert id="insert" parameterType="com.herman.gameserver.entity.payment.PayCashier">
 		<selectKey keyProperty="id" resultType="Long" order="AFTER">
 			SELECT LAST_INSERT_ID()
 		</selectKey>
@@ -337,7 +337,7 @@
 	</insert>
 
 	<!-- 插入或者更新 （匹配有值的字段）-->
-	<insert id="insertOrUpdate" parameterType="com.duogu.server.entity.order.PayCashier">
+	<insert id="insertOrUpdate" parameterType="com.herman.gameserver.entity.payment.PayCashier">
 		 INSERT INTO pay_cashier
 		 <trim prefix="(" suffix=")" suffixOverrides=",">
 			<if test="id != null">
@@ -499,7 +499,7 @@
 	</insert>
 
 	<!-- 添加 （批量插入）-->
-	<insert id="insertBatch" parameterType="com.duogu.server.entity.order.PayCashier">
+	<insert id="insertBatch" parameterType="com.herman.gameserver.entity.payment.PayCashier">
 		 INSERT INTO pay_cashier(dg_udid,game_id,pay_code,partner_code,product_name,order_id,user_email,currency_code,settle_amount,transaction_id,pay_url,pay_status,pay_time,gmt_create,gmt_modified,is_deleted)values
 		<foreach collection="list" item="item" separator=",">
 		 (
@@ -509,7 +509,7 @@
 	</insert>
 
 	<!-- 根据Id修改-->
-	<update id="updateById" parameterType="com.duogu.server.entity.order.PayCashier">
+	<update id="updateById" parameterType="com.herman.gameserver.entity.payment.PayCashier">
 		 UPDATE pay_cashier
  		 <set> 
 			<if test="bean.dgUdid != null">
@@ -565,7 +565,7 @@
 	</update>
 
 	<!-- 根据TransactionId修改-->
-	<update id="updateByTransactionId" parameterType="com.duogu.server.entity.order.PayCashier">
+	<update id="updateByTransactionId" parameterType="com.herman.gameserver.entity.payment.PayCashier">
 		UPDATE pay_cashier
 		<set>
 			<if test="bean.dgUdid != null">
