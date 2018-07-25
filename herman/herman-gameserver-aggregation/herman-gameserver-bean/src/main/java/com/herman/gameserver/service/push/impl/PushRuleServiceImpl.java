@@ -70,6 +70,14 @@ public class PushRuleServiceImpl implements IPushRuleService {
 		return this.pushRuleDAO.selectById(id);
 	}
 
+
+	/**
+	 * 根据push查询对象
+	 */
+	@Override    public PushRule getPushRuleByGameIdAndPushId(String gameCode,String pushGameCode,String mobileType) {
+		return this.pushRuleDAO.selectByGameIdAndPushId(gameCode,pushGameCode,mobileType);
+	}
+
     
     /**
      * 根据code获取对象

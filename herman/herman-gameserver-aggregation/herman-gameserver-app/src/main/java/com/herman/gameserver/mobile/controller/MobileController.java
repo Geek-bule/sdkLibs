@@ -98,13 +98,9 @@ public class MobileController extends BaseController {
         } else {
             MobileAndroid mobile = getOrAddMobileAndroid(mobileDto);
             //用户游戏绑定
-            MobileGame game = mobileGameService.getMobileGameByDgudidAndGameId(mobile.getDgUdid(),gameId);
-            if (game == null) {
-                MobileGame mobileGame = new MobileGame();
-                mobileGame.setDgUdid(mobile.getDgUdid());
-                mobileGame.setGameId(gameId);
-                mobileGame.setVersion("1.0");
-                mobileGameService.add(mobileGame);
+            if (mobileGameService.bindingGameMember(gameId,mobile.getDgUdid())) {
+                //查询推送记录表，是否有激活
+                pushRecordService.activePushGame(gameId, mobile.getDgUdid());
             }
             MobileDataSet dataSet = new MobileDataSet();
             BeanUtils.copyProperties(mobile, dataSet);
@@ -193,6 +189,24 @@ public class MobileController extends BaseController {
      * @return
      */
     private MobileIos getOrAddMobileIos(MobileDto mobileDto) {
+
+//        if (mobileDto.getDgUdid() != null) {
+//            MobileIos mobileIos = mobileIosService.getMobileByDgUdid(mobileDto.getDgUdid());
+//            if (mobileIos != null) {
+//                //异步判断idfa是否需要更新
+//                return mobileIos;
+//            }else{
+//                return this.getMobileIosByIdfa(mobileDto);
+//            }
+//        }else{
+            return this.getMobileIosByIdfa(mobileDto);
+//        }
+    }
+
+    /**
+     *
+     */
+    private MobileIos getMobileIosByIdfa(MobileDto mobileDto) {
         MobileIos mobile = mobileIosService.getMobileByIdfa(mobileDto.getIdfa());
         if(mobile != null) {
             return mobile;

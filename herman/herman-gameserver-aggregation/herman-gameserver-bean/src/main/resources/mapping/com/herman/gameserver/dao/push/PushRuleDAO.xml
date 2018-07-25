@@ -310,6 +310,11 @@
 	<select id="selectById" resultMap="base_result_map" >
 		select <include refid="base_column_list" /> from push_rule where id=#{id}
 	</select>
+
+	<!-- 根据PrimaryKey获取对象-->
+	<select id="selectByGameIdAndPushId" resultMap="base_result_map" >
+		select <include refid="base_column_list" /> from push_rule where game_code=#{gameCode} and push_game_code=#{pushGameCode} and mobile_type=#{mobileType}
+	</select>
     
     <!-- 根据gameCode获取对象-->
     <select id="selectByGameCode" resultMap="base_result_map" >

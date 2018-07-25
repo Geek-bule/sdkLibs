@@ -377,4 +377,9 @@
         from game where id=#{id}
     </select>
 
+    <!-- 增加分区-->
+    <update id="proAddGameById" parameterType="com.herman.gameserver.entity.game.Game">
+        CALL pro_add_game(#{id});
+    </update>
+
 </mapper>

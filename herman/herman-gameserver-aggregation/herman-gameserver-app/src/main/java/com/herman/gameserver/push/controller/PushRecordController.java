@@ -22,6 +22,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.List;
 
 
 /**
@@ -44,7 +45,7 @@ public class PushRecordController extends BaseController {
 	@RequestMapping(value = "/app/v1/push/record", method = RequestMethod.POST)
 	@ResponseBody
 	public ResponseBean getRecommendGame(PushDto dto) throws Exception {
-		logger.debug("[推荐游戏记录]-" + dto);
+		logger.debug("[点击推荐游戏记录]-" + dto);
 		String gameCode = dto.getGameCode();
 		String dgUdid = dto.getDgUdid();
 		String pushGameCode = dto.getPushGameCode();
@@ -85,6 +86,10 @@ public class PushRecordController extends BaseController {
 			pushRecord.setLastJumpTime(new Date());
 			pushRecordService.updateByIdAndGameId(pushRecord,pushRecord.getId(),pushRecord.getGameId());
 		}
+
+		//更新点击数据
+		pushStatisticsService.updateClickStatistics(gameId,pushGameId);
+
 		PushDataSet dataSet = new PushDataSet();
 		return new ResponseBean(dataSet);
 	}
@@ -133,5 +138,19 @@ public class PushRecordController extends BaseController {
 		}
 		PushDataSet dataSet = new PushDataSet();
 		return new ResponseBean(dataSet);
+	}
+
+
+	@RequestMapping(value = "/app/v1/web/statistics/get", method = RequestMethod.GET)
+	@ResponseBody
+	public ResponseBean getStatisticsData(PushDto dto) throws Exception {
+		logger.debug("[获取统计数据]-" + dto);
+		Long statisticsDate = dto.getCurrentDate();
+
+		PushStatistics pushStatistics = new PushStatistics();
+		pushStatistics.setStatisticsDate(statisticsDate);
+		List<PushStatistics> pushStatisticses = pushStatisticsService.findListByParam(pushStatistics);
+
+		return new ResponseBean(pushStatisticses);
 	}
 }

@@ -41,7 +41,7 @@ public class PushRuleController extends BaseController {
 	@RequestMapping(value = "/app/v1/push/recommend", method = RequestMethod.POST)
 	@ResponseBody
 	public ResponseBean getRecommendGame(PushDto dto) throws Exception {
-		logger.debug("[推荐游戏信息]-" + dto);
+		logger.debug("[获取推荐游戏信息]-" + dto);
 		String gameCode = dto.getGameCode();
 		String dgUdid = dto.getDgUdid();
 		String mobileType = dto.getMobileType();
@@ -80,4 +80,53 @@ public class PushRuleController extends BaseController {
 		}
 		return getErrResponseBean(ErrorMsg.SERVER_ERR_CODE);
 	}
+
+	/**
+	 * 添加互推规则
+	 *
+	 */
+	@RequestMapping(value = "/app/v1/web/push/modify", method = RequestMethod.POST)
+	@ResponseBody
+	public ResponseBean getPushGame(PushDto dto) throws Exception {
+		logger.debug("[添加互推信息]-" + dto);
+		String gameCode = dto.getGameCode();
+		String mobileType = dto.getMobileType();
+		String pushGameCode = dto.getPushGameCode();
+		Long percent = dto.getPercent();
+
+		// 校验
+		if(MyValidateUtil.isEmpty(gameCode)) {
+			return getErrResponseBean(ErrorMsg.REQUEST_PARAM_GAMECODE_ERR_CODE);
+		}
+
+		// 校验
+		if(MyValidateUtil.isEmpty(pushGameCode)) {
+			return getErrResponseBean(ErrorMsg.REQUEST_PARAM_GAMECODE_ERR_CODE);
+		}
+
+		if(!MyValidateUtil.isMobileType(mobileType)) {
+			return getErrResponseBean(ErrorMsg.REQUEST_PARAM_MOBILETYPE_ERR_CODE);
+		}
+
+		PushRule pushRule = pushRuleService.getPushRuleByGameIdAndPushId(gameCode,pushGameCode,mobileType);
+		if (pushRule == null) {
+			pushRule = new PushRule();
+			pushRule.setGameCode(gameCode);
+			pushRule.setPushGameCode(pushGameCode);
+			pushRule.setMobileType(mobileType);
+			pushRule.setPercent(percent);
+			pushRuleService.add(pushRule);
+		}else{
+			//根据传入的percent判断，如果为0，则删除掉这个互推规则
+			if (percent == 0) {
+				pushRuleService.deleteById(pushRule.getId());
+			}else {
+				//更新
+				pushRule.setPercent(percent);
+				pushRuleService.updateById(pushRule,pushRule.getId());
+			}
+		}
+		return new ResponseBean();
+	}
+
 }

@@ -364,6 +364,11 @@
 	</delete>
 
 	<!-- 根据PrimaryKey获取对象-->
+	<select id="selectByStatisticsDate" resultMap="base_result_map" >
+		select <include refid="base_column_list" /> from push_statistics where statistics_date=#{statisticsDate}
+	</select>
+
+	<!-- 根据PrimaryKey获取对象-->
 	<select id="selectByIdAndStatisticsDate" resultMap="base_result_map" >
 		select <include refid="base_column_list" /> from push_statistics where id=#{id} and statistics_date=#{statisticsDate}
 	</select>

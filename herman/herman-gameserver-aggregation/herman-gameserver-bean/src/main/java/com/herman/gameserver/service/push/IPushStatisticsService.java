@@ -69,4 +69,9 @@ public interface IPushStatisticsService {
 	 */
 	Integer getCount();
 
+	/**
+	 * 更新点击统计
+	 */
+	void updateClickStatistics(Long gameId,Long pushGameId);
+
 }

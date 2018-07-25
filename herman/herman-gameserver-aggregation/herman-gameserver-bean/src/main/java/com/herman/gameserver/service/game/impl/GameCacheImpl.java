@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.PostConstruct;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -80,4 +81,46 @@ public class GameCacheImpl implements IGameCache {
             return game.getCode();
         }
     }
+
+    /**
+     * 获取所有游戏信息
+     */
+    @Override
+    public List<Game> getGameList() {
+
+        List<Game> gameList = new ArrayList<>();
+        for(String gameCode : gameCodeMap.keySet()) {
+            Game game =  gameCodeMap.get(gameCode);
+            gameList.add(game);
+        }
+        return gameList;
+    }
+
+
+    /**
+     *增加游戏信息
+     */
+    @Override
+    public int add(Game game) {
+        gameCodeMap.put(game.getCode(), game);
+        gameIdMap.put(game.getId().toString(),game);
+        Integer integer = gameDao.insert(game);
+        //增加分区
+        gameDao.proAddGameById(game.getId());
+        return integer;
+    }
+
+
+    /**
+     * 更新游戏信息
+     */
+    @Override
+    public int update(Game game) {
+        gameCodeMap.remove(game.getCode());
+        gameIdMap.remove(game.getId());
+        gameCodeMap.put(game.getCode(), game);
+        gameIdMap.put(game.getId().toString(),game);
+        return gameDao.updateById(game,game.getId());
+    }
+
 }

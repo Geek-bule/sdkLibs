@@ -46,6 +46,11 @@ public interface IPushRuleService {
 	 */
 	PushRule getPushRuleById(Long id);
 
+	/**
+	 * 根据push查询对象
+	 */
+	PushRule getPushRuleByGameIdAndPushId(String gameCode,String pushGameCode,String mobileType);
+
     /**
      * 根据gameId、mobileType查询对象
      */

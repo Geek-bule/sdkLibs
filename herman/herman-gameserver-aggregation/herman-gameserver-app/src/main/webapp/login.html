@@ -1,0 +1,69 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>沈阳多谷科技有限公司</title>
+
+<meta http-equiv="X-UA-Compatible" content="IE=EmulateIE7">
+<script src="${basePath}/lib/jquery/jquery.js"></script>
+    <script>var basePath = "${basePath}";</script>
+<style>
+td{font-size:12px;font-family:"微软雅黑";color:#767676;}
+img{border:0px}
+a{font-size:12px;font-family:"微软雅黑";color:#767676;}
+.while{font-size:16px;font-family:"微软雅黑";color:#ffffff;cursor:pointer;}
+.blue{font-size:20px;font-family:"微软雅黑";color:#1e78e7;}
+</style>
+</head>
+
+<body bgcolor="#ececec" topmargin="0">
+<div style="width:100%;top:0px;" align="center"><div style="top:0px;">
+<table border="0" cellpadding="0" cellspacing="0" width="1280">
+<tbody><tr><td height="22" bgcolor="#FFFFFF" align="right"><iframe src="${basePath}/images/session.html" height="20" width="1280" frameborder="0"></iframe></td></tr>
+<tr><td height="40" bgcolor="#19262f">
+<table border="0" cellpadding="0" cellspacing="0" width="1280">
+<tbody><tr><td width="20"></td><td><img src="${basePath}/images/tu1.jpg"></td><td width="560"></td>
+<td align="center" width="130" class="while" onclick="window.location.href=&#39;index&#39;">首 页</td>
+<td align="center" width="130" class="while" onclick="window.location.href=&#39;yxzx&#39;">游戏中心</td>
+<td align="center" width="130" class="while" bgcolor="#1e78e7" onclick="window.location.href=&#39;czzx&#39;">充值中心</td>
+<td align="center" width="130" class="while" onclick="window.location.href=&#39;jzjh&#39;">家长监护工程</td>
+</tr></tbody></table>
+</td></tr>
+     
+<tr><td bgcolor="#FFFFFF" height="600">
+<table width="100%" border="0" cellpadding="0" cellspacing="0">
+<tbody><tr>
+<td align="center" width="1280" height="519" background="${basePath}/images/dr02.jpg">
+ <form id="loginForm">
+    <font style="font-size:18px">账号：<input name="username" id="user0" type="text" style="height:40px;width:220px;">
+        <br><br>密码：<input name="password" id="pass0" type="password" style="height:40px;width:220px;"></font>
+     <br><br><br><img src="${basePath}/images/dr01.jpg" onclick="login();"><br><br>
+     <a href="${basePath}/static/zc"><font style="font-size:14px">点击进行注册</font></a>
+ </form>
+<script  type="text/javascript">
+function login() {
+    $.ajax({
+        url: "${basePath}/login/login",
+        data: $("#loginForm").serialize(),
+        dataType: "json",
+        success: function (resultData) {
+            if(resultData.code == 0) {
+                alert(resultData.msg);
+                window.location.href="${basePath}/static/login";
+            } else {
+                alert(resultData.msg);
+            }
+        }
+    });
+};
+</script>
+
+</td></tr>
+<tr><td bgcolor="#19262f" height="80" align="center">
+<a href="${basePath}/static/login">健康游戏忠告：抵制不良游戏，拒绝盗版游戏，注意自我保护，谨防受骗上当，适度游戏益脑，沉迷游戏伤身，合理安排时间，享受健康生活。</a><br>
+Copyright @ 2017 syduogu.com All Rights Reserved 辽ICP备17008768号 <font color="#00CC66">适龄提示：适合12岁以上使用</font><br>
+公司名称:沈阳多谷科技有限公司 公司地址:辽宁省沈阳市大东区望花中街111号1301 公司电话:024-86670468
+</td></tr>
+</tbody></table>
+
+
+
+</td></tr></tbody></table></div></div></body></html>

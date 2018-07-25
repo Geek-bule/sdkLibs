@@ -30,6 +30,12 @@ public interface PushRuleDAO {
 	 */
 	 PushRule selectById(@Param("id") Long id);
 
+
+	/**
+	 * 根据push获取对象
+	 */
+	PushRule selectByGameIdAndPushId(@Param("gameCode") String gameCode,@Param("pushGameCode") String pushGameCode, @Param("mobileType") String mobileType);
+
     
     /**
      * 根据GameId获取对象

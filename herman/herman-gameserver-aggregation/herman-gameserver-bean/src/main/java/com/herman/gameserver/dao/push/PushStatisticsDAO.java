@@ -38,6 +38,12 @@ public interface PushStatisticsDAO {
 
 
 	/**
+	 * 根据IdAndStatisticsDate获取对象
+	 */
+	List<PushStatistics> selectByStatisticsDate(@Param("statisticsDate") Long statisticsDate);
+
+
+	/**
 	 * 根据GameIdAndStatisticsDate获取对象
 	 */
 	PushStatistics selectByGameIdAndStatisticsDate(@Param("gameId") Long gameId, @Param("pushGameId") Long pushGameId, @Param("statisticsDate") Long statisticsDate);

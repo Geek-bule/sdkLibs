@@ -60,4 +60,8 @@ public interface IGameDAO {
     List<Game> selectListPage(@Param("page") PageParameter pageParameter, @Param("entity") Game entity);
 
 
+    /**
+     *增加新的分区
+     */
+    Integer proAddGameById(@Param("id") Long id);
 }

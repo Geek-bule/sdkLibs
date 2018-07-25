@@ -1,12 +1,16 @@
 package com.herman.gameserver.service.push.impl;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 
 import com.herman.common.bean.PageParameter;
 import com.herman.gameserver.dao.push.PushRecordDAO;
 import com.herman.gameserver.entity.push.PushRecord;
+import com.herman.gameserver.entity.push.PushStatistics;
 import com.herman.gameserver.service.push.IPushRecordService;
+import com.herman.gameserver.service.push.IPushStatisticsService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
@@ -23,6 +27,8 @@ public class PushRecordServiceImpl implements IPushRecordService {
 
 	@Autowired
 	private PushRecordDAO pushRecordDAO;
+	@Autowired
+	private IPushStatisticsService pushStatisticsService;
 
 	/**
 	 * 根据条件查询列表
@@ -133,6 +139,23 @@ public class PushRecordServiceImpl implements IPushRecordService {
 				status = new Long(1);
 				pushRecord.setStatus(status);
 				this.updateByIdAndGameId(pushRecord,pushRecord.getId(),pushRecord.getGameId());
+				//在统计表中增加激活数据
+				Date date = new Date();
+				DateFormat sdf2 = new SimpleDateFormat("yyyyMMdd");
+				String strDate = sdf2.format(date);
+				Long statisticsDate = Long.parseLong(strDate);
+				PushStatistics pushStatistics = pushStatisticsService.getPushStatisticsByGameIdAndStatisticsDate(pushRecord.getGameId(),pushRecord.getPushGameId(),statisticsDate);
+				if (pushStatistics == null) {
+					pushStatistics = new PushStatistics();
+					pushStatistics.setGameId(pushRecord.getGameId());
+					pushStatistics.setPushGameId(pushRecord.getPushGameId());
+					pushStatistics.setStatisticsDate(statisticsDate);
+					pushStatistics.setIconActive(Long.parseLong("1"));
+					pushStatisticsService.add(pushStatistics);
+				}else{
+					pushStatistics.setIconActive(pushStatistics.getIconActive()+1);
+					pushStatisticsService.updateByIdAndStatisticsDate(pushStatistics,pushStatistics.getId(),statisticsDate);
+				}
 			}
 		}
 	}

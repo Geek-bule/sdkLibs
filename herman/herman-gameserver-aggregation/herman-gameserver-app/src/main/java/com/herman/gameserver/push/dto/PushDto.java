@@ -35,9 +35,9 @@ public class PushDto implements Serializable {
     private String platformType;
 
     /**
-     * 绑定平台账号标识
+     * 互推比例
      */
-    private String platformAccount;
+    private Long percent;
 
     /**
      * 手机系统类型（android，ios）
@@ -45,9 +45,9 @@ public class PushDto implements Serializable {
     private String mobileType;
 
     /**
-     * 用户昵称
+     * 当前时间 年月日 Long
      */
-    private String nikename;
+    private Long currentDate;
 
     /**
      * 用户头像
@@ -94,12 +94,12 @@ public class PushDto implements Serializable {
         this.platformType = platformType;
     }
 
-    public String getPlatformAccount() {
-        return platformAccount;
+    public Long getPercent() {
+        return percent;
     }
 
-    public void setPlatformAccount(String platformAccount) {
-        this.platformAccount = platformAccount;
+    public void setPercent(Long percent) {
+        this.percent = percent;
     }
 
     public String getMobileType() {
@@ -110,12 +110,12 @@ public class PushDto implements Serializable {
         this.mobileType = mobileType;
     }
 
-    public String getNikename() {
-        return nikename;
+    public Long getCurrentDate() {
+        return currentDate;
     }
 
-    public void setNikename(String nikename) {
-        this.nikename = nikename;
+    public void setCurrentDate(Long currentDate) {
+        this.currentDate = currentDate;
     }
 
     public String getHead() {
@@ -134,9 +134,9 @@ public class PushDto implements Serializable {
                 ", dgAccount='" + dgAccount + '\'' +
                 ", dgUdid='" + dgUdid + '\'' +
                 ", platformType='" + platformType + '\'' +
-                ", platformAccount='" + platformAccount + '\'' +
+                ", percent='" + percent + '\'' +
                 ", mobileType='" + mobileType + '\'' +
-                ", nikename='" + nikename + '\'' +
+                ", currentDate='" + currentDate + '\'' +
                 ", head='" + head + '\'' +
                 '}';
     }

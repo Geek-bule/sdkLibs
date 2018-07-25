@@ -1,0 +1,635 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.duogu.server.dao.order.PayCashierDAO">
+
+	<!--实体映射-->
+	<resultMap id="base_result_map" type="com.duogu.server.entity.order.PayCashier">
+		<!--主键-->
+		<id column="id" property="id"  />
+		<!--用户代码-->
+		<result column="dg_udid" property="dgUdid"  />
+		<!--游戏代码-->
+		<result column="game_id" property="gameId"  />
+		<!--支付记录代码-->
+		<result column="pay_code" property="payCode"  />
+		<!--商户号-->
+		<result column="partner_code" property="partnerCode"  />
+		<!--商品名-->
+		<result column="product_name" property="productName"  />
+		<!--商品订单id-->
+		<result column="order_id" property="orderId"  />
+		<!--用户邮箱-->
+		<result column="user_email" property="userEmail"  />
+		<!--币种符号-->
+		<result column="currency_code" property="currencyCode"  />
+		<!--支付金额-->
+		<result column="settle_amount" property="settleAmount"  />
+		<!--交易流水号-->
+		<result column="transaction_id" property="transactionId"  />
+		<!--用户支付地址-->
+		<result column="pay_url" property="payUrl"  />
+		<!--支付状态-->
+		<result column="pay_status" property="payStatus"  />
+		<!--用户支付时间-->
+		<result column="pay_time" property="payTime"  />
+		<!--创建时间-->
+		<result column="gmt_create" property="gmtCreate"  />
+		<!--更新时间-->
+		<result column="gmt_modified" property="gmtModified"  />
+		<!--是否删除（0：否，1：是）-->
+		<result column="is_deleted" property="isDeleted"  />
+	</resultMap>
+
+
+	<!-- 通用查询结果列-->
+	<sql id="base_column_list">
+		 id,dg_udid,game_id,pay_code,partner_code,product_name,order_id,user_email,currency_code,settle_amount,transaction_id,pay_url,pay_status,pay_time,gmt_create,gmt_modified,is_deleted
+	</sql>
+
+	<sql id="base_condition_filed">
+			<if test="id != null">
+				 and  id = #{id}
+			</if>
+			<if test="dgUdid != null and dgUdid!=''">
+				 and  dg_udid = #{dgUdid}
+			</if>
+			<if test="gameId != null and gameId!=''">
+				 and  game_id = #{gameId}
+			</if>
+			<if test="payCode != null and payCode!=''">
+				 and  pay_code = #{payCode}
+			</if>
+			<if test="partnerCode != null and partnerCode!=''">
+				 and  partner_code = #{partnerCode}
+			</if>
+			<if test="productName != null and productName!=''">
+				 and  product_name = #{productName}
+			</if>
+			<if test="orderId != null and orderId!=''">
+				 and  order_id = #{orderId}
+			</if>
+			<if test="userEmail != null and userEmail!=''">
+				 and  user_email = #{userEmail}
+			</if>
+			<if test="currencyCode != null and currencyCode!=''">
+				 and  currency_code = #{currencyCode}
+			</if>
+			<if test="settleAmount != null">
+				 and  settle_amount = #{settleAmount}
+			</if>
+			<if test="transactionId != null and transactionId!=''">
+				 and  transaction_id = #{transactionId}
+			</if>
+			<if test="payUrl != null and payUrl!=''">
+				 and  pay_url = #{payUrl}
+			</if>
+			<if test="payStatus != null and payStatus!=''">
+				 and  pay_status = #{payStatus}
+			</if>
+			<if test="payTime != null">
+				 and  pay_time = #{payTime}
+			</if>
+			<if test="gmtCreate != null">
+				 and  gmt_create = #{gmtCreate}
+			</if>
+			<if test="gmtModified != null">
+				 and  gmt_modified = #{gmtModified}
+			</if>
+			<if test="isDeleted != null">
+				 and  is_deleted = #{isDeleted}
+			</if>
+	</sql>
+	<!-- 通用条件列-->
+	<sql id="base_condition">
+	 <where> <include refid="base_condition_filed" />	 </where>
+	</sql>
+
+	<!-- 通用查询条件列-->
+	<sql id="query_condition">
+	 <where>
+			<if test="dgUdid!= null  and dgUdid!=''">
+				 and  dg_udid like concat('%', #{dgUdid}, '%')
+			</if>
+			<if test="gameId!= null  and gameId!=''">
+				 and  game_id like concat('%', #{gameId}, '%')
+			</if>
+			<if test="payCode!= null  and payCode!=''">
+				 and  pay_code like concat('%', #{payCode}, '%')
+			</if>
+			<if test="partnerCode!= null  and partnerCode!=''">
+				 and  partner_code like concat('%', #{partnerCode}, '%')
+			</if>
+			<if test="productName!= null  and productName!=''">
+				 and  product_name like concat('%', #{productName}, '%')
+			</if>
+			<if test="orderId!= null  and orderId!=''">
+				 and  order_id like concat('%', #{orderId}, '%')
+			</if>
+			<if test="userEmail!= null  and userEmail!=''">
+				 and  user_email like concat('%', #{userEmail}, '%')
+			</if>
+			<if test="currencyCode!= null  and currencyCode!=''">
+				 and  currency_code like concat('%', #{currencyCode}, '%')
+			</if>
+			<if test="transactionId!= null  and transactionId!=''">
+				 and  transaction_id like concat('%', #{transactionId}, '%')
+			</if>
+			<if test="payUrl!= null  and payUrl!=''">
+				 and  pay_url like concat('%', #{payUrl}, '%')
+			</if>
+			<if test="payStatus!= null  and payStatus!=''">
+				 and  pay_status like concat('%', #{payStatus}, '%')
+			</if>
+			<if test="payTime != null and payTime !=''">
+				 <![CDATA[ and  pay_time = str_to_date('${payTime}', '%Y-%m-%d') ]]>
+			</if>
+
+			<if test="gmtCreate != null and gmtCreate !=''">
+				 <![CDATA[ and  gmt_create = str_to_date('${gmtCreate}', '%Y-%m-%d') ]]>
+			</if>
+
+			<if test="gmtModified != null and gmtModified !=''">
+				 <![CDATA[ and  gmt_modified = str_to_date('${gmtModified}', '%Y-%m-%d') ]]>
+			</if>
+
+	 </where>
+	</sql>
+
+	<!-- 通用查询条件列，用于分页-->
+	<sql id="query_condition_page">
+	 <where>
+			<if test="entity.dgUdid!= null  and entity.dgUdid!=''">
+				 and  dg_udid like concat('%', #{entity.dgUdid}, '%')
+			</if>
+			<if test="entity.gameId!= null  and entity.gameId!=''">
+				 and  game_id like concat('%', #{entity.gameId}, '%')
+			</if>
+			<if test="entity.payCode!= null  and entity.payCode!=''">
+				 and  pay_code like concat('%', #{entity.payCode}, '%')
+			</if>
+			<if test="entity.partnerCode!= null  and entity.partnerCode!=''">
+				 and  partner_code like concat('%', #{entity.partnerCode}, '%')
+			</if>
+			<if test="entity.productName!= null  and entity.productName!=''">
+				 and  product_name like concat('%', #{entity.productName}, '%')
+			</if>
+			<if test="entity.orderId!= null  and entity.orderId!=''">
+				 and  order_id like concat('%', #{entity.orderId}, '%')
+			</if>
+			<if test="entity.userEmail!= null  and entity.userEmail!=''">
+				 and  user_email like concat('%', #{entity.userEmail}, '%')
+			</if>
+			<if test="entity.currencyCode!= null  and entity.currencyCode!=''">
+				 and  currency_code like concat('%', #{entity.currencyCode}, '%')
+			</if>
+			<if test="entity.transactionId!= null  and entity.transactionId!=''">
+				 and  transaction_id like concat('%', #{entity.transactionId}, '%')
+			</if>
+			<if test="entity.payUrl!= null  and entity.payUrl!=''">
+				 and  pay_url like concat('%', #{entity.payUrl}, '%')
+			</if>
+			<if test="entity.payStatus!= null  and entity.payStatus!=''">
+				 and  pay_status like concat('%', #{entity.payStatus}, '%')
+			</if>
+			<if test="entity.payTime != null and entity.payTime !=''">
+				 <![CDATA[ and  pay_time = str_to_date('${entity.payTime}', '%Y-%m-%d') ]]>
+			</if>
+
+			<if test="entity.gmtCreate != null and entity.gmtCreate !=''">
+				 <![CDATA[ and  gmt_create = str_to_date('${entity.gmtCreate}', '%Y-%m-%d') ]]>
+			</if>
+
+			<if test="entity.gmtModified != null and entity.gmtModified !=''">
+				 <![CDATA[ and  gmt_modified = str_to_date('${entity.gmtModified}', '%Y-%m-%d') ]]>
+			</if>
+
+	 </where>
+	</sql>
+
+	<!-- 查询集合-->
+	<select id="selectList" resultMap="base_result_map" >
+		 SELECT <include refid="base_column_list" /> FROM pay_cashier <include refid="query_condition" />
+		 <if test="orderBy!=null">
+			 order by ${orderBy}
+		 </if>
+	</select>
+
+	<!-- 分页查询集合-->
+	<select id="selectListPage" resultMap="base_result_map" >
+		 SELECT <include refid="base_column_list" /> FROM pay_cashier <include refid="query_condition_page" />
+		 <if test="orderBy!=null">
+			 order by ${orderBy}
+		 </if>
+	</select>
+
+	<!-- 查询数量-->
+	<select id="selectCount" resultType="java.lang.Integer" >
+		 SELECT count(1) FROM pay_cashier <include refid="query_condition" />
+	</select>
+
+	<!-- 插入 （匹配有值的字段）-->
+	<insert id="insert" parameterType="com.duogu.server.entity.order.PayCashier">
+		<selectKey keyProperty="id" resultType="Long" order="AFTER">
+			SELECT LAST_INSERT_ID()
+		</selectKey>
+		 INSERT INTO pay_cashier
+		 <trim prefix="(" suffix=")" suffixOverrides="," >
+			<if test="dgUdid != null">
+				 dg_udid,
+			</if>
+			<if test="gameId != null">
+				 game_id,
+			</if>
+			<if test="payCode != null">
+				 pay_code,
+			</if>
+			<if test="partnerCode != null">
+				 partner_code,
+			</if>
+			<if test="productName != null">
+				 product_name,
+			</if>
+			<if test="orderId != null">
+				 order_id,
+			</if>
+			<if test="userEmail != null">
+				 user_email,
+			</if>
+			<if test="currencyCode != null">
+				 currency_code,
+			</if>
+			<if test="settleAmount != null">
+				 settle_amount,
+			</if>
+			<if test="transactionId != null">
+				 transaction_id,
+			</if>
+			<if test="payUrl != null">
+				 pay_url,
+			</if>
+			<if test="payStatus != null">
+				 pay_status,
+			</if>
+			<if test="payTime != null">
+				 pay_time,
+			</if>
+			<if test="gmtCreate != null">
+				 gmt_create,
+			</if>
+			<if test="gmtModified != null">
+				 gmt_modified,
+			</if>
+			<if test="isDeleted != null">
+				 is_deleted,
+			</if>
+		 </trim>
+		 <trim prefix="values (" suffix=")" suffixOverrides="," >
+			<if test="dgUdid!=null">
+				 #{dgUdid},
+			</if>
+			<if test="gameId!=null">
+				 #{gameId},
+			</if>
+			<if test="payCode!=null">
+				 #{payCode},
+			</if>
+			<if test="partnerCode!=null">
+				 #{partnerCode},
+			</if>
+			<if test="productName!=null">
+				 #{productName},
+			</if>
+			<if test="orderId!=null">
+				 #{orderId},
+			</if>
+			<if test="userEmail!=null">
+				 #{userEmail},
+			</if>
+			<if test="currencyCode!=null">
+				 #{currencyCode},
+			</if>
+			<if test="settleAmount!=null">
+				 #{settleAmount},
+			</if>
+			<if test="transactionId!=null">
+				 #{transactionId},
+			</if>
+			<if test="payUrl!=null">
+				 #{payUrl},
+			</if>
+			<if test="payStatus!=null">
+				 #{payStatus},
+			</if>
+			<if test="payTime!=null">
+				 #{payTime},
+			</if>
+			<if test="gmtCreate!=null">
+				 #{gmtCreate},
+			</if>
+			<if test="gmtModified!=null">
+				 #{gmtModified},
+			</if>
+			<if test="isDeleted!=null">
+				 #{isDeleted},
+			</if>
+		 </trim>
+	</insert>
+
+	<!-- 插入或者更新 （匹配有值的字段）-->
+	<insert id="insertOrUpdate" parameterType="com.duogu.server.entity.order.PayCashier">
+		 INSERT INTO pay_cashier
+		 <trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="id != null">
+				 id,
+			</if>
+			<if test="dgUdid != null">
+				 dg_udid,
+			</if>
+			<if test="gameId != null">
+				 game_id,
+			</if>
+			<if test="payCode != null">
+				 pay_code,
+			</if>
+			<if test="partnerCode != null">
+				 partner_code,
+			</if>
+			<if test="productName != null">
+				 product_name,
+			</if>
+			<if test="orderId != null">
+				 order_id,
+			</if>
+			<if test="userEmail != null">
+				 user_email,
+			</if>
+			<if test="currencyCode != null">
+				 currency_code,
+			</if>
+			<if test="settleAmount != null">
+				 settle_amount,
+			</if>
+			<if test="transactionId != null">
+				 transaction_id,
+			</if>
+			<if test="payUrl != null">
+				 pay_url,
+			</if>
+			<if test="payStatus != null">
+				 pay_status,
+			</if>
+			<if test="payTime != null">
+				 pay_time,
+			</if>
+			<if test="gmtCreate != null">
+				 gmt_create,
+			</if>
+			<if test="gmtModified != null">
+				 gmt_modified,
+			</if>
+			<if test="isDeleted != null">
+				 is_deleted,
+			</if>
+		 </trim>
+		 <trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="id!=null">
+				 #{id},
+			</if>
+			<if test="dgUdid!=null">
+				 #{dgUdid},
+			</if>
+			<if test="gameId!=null">
+				 #{gameId},
+			</if>
+			<if test="payCode!=null">
+				 #{payCode},
+			</if>
+			<if test="partnerCode!=null">
+				 #{partnerCode},
+			</if>
+			<if test="productName!=null">
+				 #{productName},
+			</if>
+			<if test="orderId!=null">
+				 #{orderId},
+			</if>
+			<if test="userEmail!=null">
+				 #{userEmail},
+			</if>
+			<if test="currencyCode!=null">
+				 #{currencyCode},
+			</if>
+			<if test="settleAmount!=null">
+				 #{settleAmount},
+			</if>
+			<if test="transactionId!=null">
+				 #{transactionId},
+			</if>
+			<if test="payUrl!=null">
+				 #{payUrl},
+			</if>
+			<if test="payStatus!=null">
+				 #{payStatus},
+			</if>
+			<if test="payTime!=null">
+				 #{payTime},
+			</if>
+			<if test="gmtCreate!=null">
+				 #{gmtCreate},
+			</if>
+			<if test="gmtModified!=null">
+				 #{gmtModified},
+			</if>
+			<if test="isDeleted!=null">
+				 #{isDeleted},
+			</if>
+		 </trim>
+		 on DUPLICATE key
+		 <trim prefix="" suffix="" suffixOverrides=",">
+			<if test="dgUdid!=null">
+				 dg_udid = VALUES(dg_udid),
+			</if>
+			<if test="gameId!=null">
+				 game_id = VALUES(game_id),
+			</if>
+			<if test="payCode!=null">
+				 pay_code = VALUES(pay_code),
+			</if>
+			<if test="partnerCode!=null">
+				 partner_code = VALUES(partner_code),
+			</if>
+			<if test="productName!=null">
+				 product_name = VALUES(product_name),
+			</if>
+			<if test="orderId!=null">
+				 order_id = VALUES(order_id),
+			</if>
+			<if test="userEmail!=null">
+				 user_email = VALUES(user_email),
+			</if>
+			<if test="currencyCode!=null">
+				 currency_code = VALUES(currency_code),
+			</if>
+			<if test="settleAmount!=null">
+				 settle_amount = VALUES(settle_amount),
+			</if>
+			<if test="transactionId!=null">
+				 transaction_id = VALUES(transaction_id),
+			</if>
+			<if test="payUrl!=null">
+				 pay_url = VALUES(pay_url),
+			</if>
+			<if test="payStatus!=null">
+				 pay_status = VALUES(pay_status),
+			</if>
+			<if test="payTime!=null">
+				 pay_time = VALUES(pay_time),
+			</if>
+			<if test="gmtCreate!=null">
+				 gmt_create = VALUES(gmt_create),
+			</if>
+			<if test="gmtModified!=null">
+				 gmt_modified = VALUES(gmt_modified),
+			</if>
+			<if test="isDeleted!=null">
+				 is_deleted = VALUES(is_deleted),
+			</if>
+		 </trim>
+	</insert>
+
+	<!-- 添加 （批量插入）-->
+	<insert id="insertBatch" parameterType="com.duogu.server.entity.order.PayCashier">
+		 INSERT INTO pay_cashier(dg_udid,game_id,pay_code,partner_code,product_name,order_id,user_email,currency_code,settle_amount,transaction_id,pay_url,pay_status,pay_time,gmt_create,gmt_modified,is_deleted)values
+		<foreach collection="list" item="item" separator=",">
+		 (
+		 #{item.dgUdid},#{item.gameId},#{item.payCode},#{item.partnerCode},#{item.productName},#{item.orderId},#{item.userEmail},#{item.currencyCode},#{item.settleAmount},#{item.transactionId},#{item.payUrl},#{item.payStatus},#{item.payTime},#{item.gmtCreate},#{item.gmtModified},#{item.isDeleted}
+			 )
+		</foreach>
+	</insert>
+
+	<!-- 根据Id修改-->
+	<update id="updateById" parameterType="com.duogu.server.entity.order.PayCashier">
+		 UPDATE pay_cashier
+ 		 <set> 
+			<if test="bean.dgUdid != null">
+				 dg_udid = #{bean.dgUdid},
+			</if>
+			<if test="bean.gameId != null">
+				 game_id = #{bean.gameId},
+			</if>
+			<if test="bean.payCode != null">
+				 pay_code = #{bean.payCode},
+			</if>
+			<if test="bean.partnerCode != null">
+				 partner_code = #{bean.partnerCode},
+			</if>
+			<if test="bean.productName != null">
+				 product_name = #{bean.productName},
+			</if>
+			<if test="bean.orderId != null">
+				 order_id = #{bean.orderId},
+			</if>
+			<if test="bean.userEmail != null">
+				 user_email = #{bean.userEmail},
+			</if>
+			<if test="bean.currencyCode != null">
+				 currency_code = #{bean.currencyCode},
+			</if>
+			<if test="bean.settleAmount != null">
+				 settle_amount = #{bean.settleAmount},
+			</if>
+			<if test="bean.transactionId != null">
+				 transaction_id = #{bean.transactionId},
+			</if>
+			<if test="bean.payUrl != null">
+				 pay_url = #{bean.payUrl},
+			</if>
+			<if test="bean.payStatus != null">
+				 pay_status = #{bean.payStatus},
+			</if>
+			<if test="bean.payTime != null">
+				 pay_time = #{bean.payTime},
+			</if>
+			<if test="bean.gmtCreate != null">
+				 gmt_create = #{bean.gmtCreate},
+			</if>
+			<if test="bean.gmtModified != null">
+				 gmt_modified = #{bean.gmtModified},
+			</if>
+			<if test="bean.isDeleted != null">
+				 is_deleted = #{bean.isDeleted},
+			</if>
+ 		 </set>
+ 		 where id=#{id}
+	</update>
+
+	<!-- 根据TransactionId修改-->
+	<update id="updateByTransactionId" parameterType="com.duogu.server.entity.order.PayCashier">
+		UPDATE pay_cashier
+		<set>
+			<if test="bean.dgUdid != null">
+				dg_udid = #{bean.dgUdid},
+			</if>
+			<if test="bean.gameId != null">
+				game_id = #{bean.gameId},
+			</if>
+			<if test="bean.payCode != null">
+				pay_code = #{bean.payCode},
+			</if>
+			<if test="bean.partnerCode != null">
+				partner_code = #{bean.partnerCode},
+			</if>
+			<if test="bean.productName != null">
+				product_name = #{bean.productName},
+			</if>
+			<if test="bean.orderId != null">
+				order_id = #{bean.orderId},
+			</if>
+			<if test="bean.userEmail != null">
+				user_email = #{bean.userEmail},
+			</if>
+			<if test="bean.currencyCode != null">
+				currency_code = #{bean.currencyCode},
+			</if>
+			<if test="bean.settleAmount != null">
+				settle_amount = #{bean.settleAmount},
+			</if>
+			<if test="bean.payUrl != null">
+				pay_url = #{bean.payUrl},
+			</if>
+			<if test="bean.payStatus != null">
+				pay_status = #{bean.payStatus},
+			</if>
+			<if test="bean.payTime != null">
+				pay_time = #{bean.payTime},
+			</if>
+			<if test="bean.gmtCreate != null">
+				gmt_create = #{bean.gmtCreate},
+			</if>
+			<if test="bean.gmtModified != null">
+				gmt_modified = #{bean.gmtModified},
+			</if>
+			<if test="bean.isDeleted != null">
+				is_deleted = #{bean.isDeleted},
+			</if>
+		</set>
+		where transactionId=#{transactionId}
+	</update>
+
+	<!-- 根据Id删除-->
+	<delete id="deleteById">
+		delete from pay_cashier where id=#{id}
+	</delete>
+
+	<!-- 根据PrimaryKey获取对象-->
+	<select id="selectById" resultMap="base_result_map" >
+		select <include refid="base_column_list" /> from pay_cashier where id=#{id}
+	</select>
+
+	<!-- 根据PrimaryKey获取对象-->
+	<select id="selectByTransactionId" resultMap="base_result_map" >
+		select <include refid="base_column_list" /> from pay_cashier where transactionId=#{transactionId}
+	</select>
+
+</mapper>

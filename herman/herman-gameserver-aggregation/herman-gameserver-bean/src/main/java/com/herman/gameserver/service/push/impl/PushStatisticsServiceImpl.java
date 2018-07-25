@@ -1,5 +1,8 @@
 package com.herman.gameserver.service.push.impl;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 
 import com.herman.common.bean.PageParameter;
@@ -7,6 +10,7 @@ import com.herman.gameserver.dao.push.PushStatisticsDAO;
 import com.herman.gameserver.entity.push.PushStatistics;
 import com.herman.gameserver.service.push.IPushStatisticsService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 
 
@@ -26,7 +30,7 @@ public class PushStatisticsServiceImpl implements IPushStatisticsService {
 	 * 根据条件查询列表
 	 */
 	@Override	public List<PushStatistics> findListByParam(PushStatistics param) {
-		List<PushStatistics> list = this.pushStatisticsDAO.selectList(param);
+		List<PushStatistics> list = this.pushStatisticsDAO.selectByStatisticsDate(param.getStatisticsDate());
 		return list;
 	}
 
@@ -98,6 +102,30 @@ public class PushStatisticsServiceImpl implements IPushStatisticsService {
 	 */
 	@Override	public Integer getCount(){
 		return this.pushStatisticsDAO.selectCount();
+	}
+
+
+	/**
+	 * 更新点击统计
+	 */
+	@Async
+	@Override	public void updateClickStatistics(Long gameId,Long pushGameId){
+		Date date = new Date();
+		DateFormat sdf2 = new SimpleDateFormat("yyyyMMdd");
+		String strDate = sdf2.format(date);
+		Long statisticsDate = Long.parseLong(strDate);
+		PushStatistics pushStatistics = this.getPushStatisticsByGameIdAndStatisticsDate(gameId,pushGameId,statisticsDate);
+		if (pushStatistics == null) {
+			pushStatistics = new PushStatistics();
+			pushStatistics.setGameId(gameId);
+			pushStatistics.setPushGameId(pushGameId);
+			pushStatistics.setIconClick(Long.parseLong("1"));
+			pushStatistics.setStatisticsDate(statisticsDate);
+			this.add(pushStatistics);
+		}else{
+			pushStatistics.setIconClick(pushStatistics.getIconClick()+1);
+			this.updateByIdAndStatisticsDate(pushStatistics,pushStatistics.getId(),pushStatistics.getStatisticsDate());
+		}
 	}
 
 }

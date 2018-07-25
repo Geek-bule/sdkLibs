@@ -2,6 +2,8 @@ package com.herman.gameserver.service.game;
 
 import com.herman.gameserver.entity.game.Game;
 
+import java.util.List;
+
 /**
  * 游戏信息缓存
  * Created by herman on 2018/3/6.
@@ -35,5 +37,22 @@ public interface IGameCache {
      * @return
      */
     public String getGameCodeById(Long gameId);
+
+    /**
+     * 获取所有游戏信息
+     */
+    public List<Game> getGameList();
+
+
+    /**
+     *增加游戏信息
+     */
+    public int add(Game game);
+
+
+    /**
+     * 更新游戏信息
+     */
+    public int update(Game game);
 
 }
